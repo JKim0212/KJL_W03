@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _isGround = false;
-                _rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+                _rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
             }
         }
 
