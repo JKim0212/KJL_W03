@@ -1385,7 +1385,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGround: 1
-  testbool: 1
 --- !u!23 &1813053560
 MeshRenderer:
   m_ObjectHideFlags: 0
