@@ -2496,7 +2496,7 @@ MonoBehaviour:
   player: {fileID: 6707170}
   distance: 7
   height: 2
-  mouseSensitivity: 200
+  mouseSensitivity: 1000
   verticalAngleLimit: 80
 --- !u!1 &751894402
 GameObject:
