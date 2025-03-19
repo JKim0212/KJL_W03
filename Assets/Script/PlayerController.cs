@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
     [SerializeField]bool isGround = true;
-    [SerializeField] bool testbool = true;
     Vector2 input;
     float jump;
 
@@ -42,23 +41,27 @@ public class PlayerController : MonoBehaviour
         //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, movement.z);
         transform.Translate(movement);
         //transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
-        if (testbool)
+        if (isGround)
         {
             transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
         }
+        else if(input.y!=0)
+        {
+            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 60f);
+        }
         else
         {
-            if (isGround || input.y != 0) transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
+            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 30f);
         }
 
-        /*float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 movement = new Vector3(horizontal * 5f * Time.deltaTime, 0f, vertical * 5f * Time.deltaTime);
+            /*float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+            Vector3 movement = new Vector3(horizontal * 5f * Time.deltaTime, 0f, vertical * 5f * Time.deltaTime);
 
-        //_rb.MovePosition(transform.position+movement);
+            //_rb.MovePosition(transform.position+movement);
 
-        cc.Move(movement);*/
-        Debug.Log(jump);
+            cc.Move(movement);*/
+            Debug.Log(jump);
         if (jump>0.5f && isGround)
         {
             isGround = false;
