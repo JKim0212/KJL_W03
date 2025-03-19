@@ -32,11 +32,11 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpForce = 5f;
-    public float playerGravity = -9.81f;
+    //public float playerGravity = -9.81f;
     public int maxJumpCount = 2; // 최대 점프 횟수
-
-    
     private int jumpCount; // 점프 횟수를 추적하는 변수
+
+
 
     [Header("Assists")]
 
@@ -59,10 +59,6 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
 
     private void Update()
     {
-        // 캐릭터의 원하는 속도 계산(마찰력은 사용하지 않음)
-        desiredVelocity = new Vector3(directionX, 0f, 0f) * Mathf.Max(maxSpeed - friction, 0f);
-
-
         Jump();
     }
 
@@ -96,6 +92,9 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
         // 원하는 속도 계산
         desiredVelocity = (forward * directionZ + right * directionX) * maxSpeed;
 
+        // Y축 속도 추가
+        desiredVelocity.y = rb.linearVelocity.y; // 현재 Y축 속도를 유지
+
         // X축 움직임
         if (directionX != 0 || directionZ != 0)
         {
@@ -121,6 +120,7 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
         velocity.z = Mathf.MoveTowards(velocity.z, desiredVelocity.z, maxSpeedChange);
 
         // 새로운 속도를 rigidbody에 업데이트
+        velocity.y = rb.linearVelocity.y; // Y축 속도 유지
         rb.linearVelocity = velocity;
 
         // 플레이어 회전

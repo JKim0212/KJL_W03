@@ -252,8 +252,7 @@ MonoBehaviour:
   maxAirDeceleration: 50
   maxAirTurnSpeed: 80
   velocity: {x: 0, y: 0, z: 0}
-  jumpForce: 5
-  playerGravity: -9.81
+  jumpForce: 20
   maxJumpCount: 2
   inginging: 0
 --- !u!54 &6707172
