@@ -20,8 +20,7 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
     public float maxAirDeceleration; // 공중 감속도(공중에서 얼마나 빠르게 정지 도달)
     public float maxAirTurnSpeed = 80f; // 공중 방향 전환 속도
     private float friction; // 마찰력(쓰이지 않음)
-    //
-    
+    //------------------------
     private Vector3 desiredVelocity;
     public Vector3 velocity;
     private float maxSpeedChange;
@@ -124,11 +123,20 @@ public class KimYuRim_TestPlayer_Script : MonoBehaviour
         rb.linearVelocity = velocity;
 
         // 플레이어 회전
+        if (velocity.x != 0 || velocity.z != 0) // 이동하는 경우에만 회전
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
+
+        /*
+        // 플레이어 회전
         if (velocity != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(velocity);
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, turnSpeed * Time.deltaTime);
         }
+        */
 
 
         Debug.Log("x축 속도: " + velocity.x + ", z축 속도: " + velocity.z);
