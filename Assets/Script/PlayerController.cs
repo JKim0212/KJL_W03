@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
     [SerializeField] private float movespeed;
+    private float moveAccelation = 0;
     [SerializeField] private bool isGround;
     private Vector2 input;
     private bool jump;
@@ -33,7 +34,21 @@ public class PlayerController : MonoBehaviour
 
     private void MoveForward()
     {
-        Vector3 movement = new Vector3(0f, 0f, 1 + 0.5f * input.y);
+        if (input.y > 0)
+        {
+            moveAccelation = moveAccelation < 20 ? moveAccelation + 1 : 20;
+        }
+        else if (input.y < 0)
+        {
+            moveAccelation = moveAccelation < 20 ? moveAccelation + 2 : 20;
+        }
+        else
+        {
+            //moveAccelation = moveAccelation > 10 ? moveAccelation - 1 : moveAccelation > 0 ? moveAccelation - 2 : 0;
+            moveAccelation = moveAccelation > 0 ? moveAccelation - 1 : 0;
+        }
+
+        Vector3 movement = new(0f, 0f, 1 + input.y * moveAccelation * 0.02f);
 
         movement *= movespeed;
 
@@ -91,7 +106,26 @@ public class PlayerController : MonoBehaviour
         if (jump && isGround)
         {
             isGround = false;
-            rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 8, ForceMode.Impulse);
+        }
+        else if (!isGround)
+        {
+            Vector3 nowVelocity = rb.linearVelocity;
+
+            if (nowVelocity.y < -12f)
+            {
+                nowVelocity.y = -12f;
+                rb.linearVelocity = nowVelocity;
+            }
+            else if (nowVelocity.y < 0f)
+            {
+                rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
+            }
+            else if (nowVelocity.y < 2f)
+            {
+                nowVelocity.y = -1f;
+                rb.linearVelocity = nowVelocity;
+            }
         }
     }
 
