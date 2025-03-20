@@ -96,6 +96,7 @@ public class CharacterMovement : MonoBehaviour
         {
             // 입력이 전혀 없으면, 감속
             maxSpeedChange = deceleration * Time.deltaTime;
+            
         }
 
         // maxSpeedChange 만큼 X축, Z축 속도 계산
