@@ -5,28 +5,29 @@ using UnityEngine.Animations;
 public class CharacterJump : MonoBehaviour
 {
     [Header("Basic Components")]
-    private Rigidbody rb;
-    CharacterGround ground;
     public Vector3 velocity;
     public bool onGround = true;
+    private Rigidbody rb;
+    CharacterGround ground;
+    
 
     [Header("Jumping")]
     public float jumpHeight = 7.3f; // 최고 점프 높이
-    public float timeToJumpApex = 5f; // 최고 높이까지 걸리는 시간
-    public float upwardMovementMultiplier = 1f; // 상승 중력 곱하기
-    public float downwardMovementMultiplier = 1f; // 하강 중력 곱하기
-    public int maxAirJumps = 1; // 최대 점프 횟수
-    public bool variablejumpHeight = false; // 점프키에 손 떼면 떨어지게 할 것인가?
+    public float timeToJumpApex = 2f; // 최고 높이까지 걸리는 시간
+    public float upwardMovementMultiplier = 2f; // 상승 중력 곱하기
+    public float downwardMovementMultiplier = 2f; // 하강 중력 곱하기
+    public int maxAirJumps = 1; // 최대 추가 점프 횟수
+    public bool variablejumpHeight = false; // 점프키에 손 떼면 떨어지게 할 것인가?(입력 시간에 따른 점프 높이 변화)
     public float jumpCutOff = 1; // 점프키 손 떼면 중력 곱하기
     public float speedLimit = 20; // 최대 낙하 속도 제한
-    public float coyoteTime = 0.2f; // 코요테 타임
-    public float jumpBuffer = 0.2f; // 점프 버퍼
+    public float coyoteTime = 0.15f; // 코요테 타임
+    public float jumpBuffer = 0.15f; // 점프 버퍼
     //------------------------
     public float jumpSpeed;
     private float defaultGravityScale;
     private Vector3 customGravity;
-    public float gravMultiplier;
-    public bool canJumpAgain = false;
+    private float gravMultiplier;
+    private bool canJumpAgain = false;
     private bool desiredJump;
     private float jumpBufferCounter;
     private float coyoteTimeCounter = 0;
@@ -37,9 +38,14 @@ public class CharacterJump : MonoBehaviour
 
     private void Awake()
     {
+        // 기본 컴포넌트 불러오기
         rb = GetComponent<Rigidbody>();
         ground = GetComponent<CharacterGround>();
+
+        // 중력 초기화
         defaultGravityScale = 1f;
+        gravMultiplier = defaultGravityScale;
+
         anim = GetComponent<Animator>();
     }
 
@@ -56,6 +62,8 @@ public class CharacterJump : MonoBehaviour
 
         CheckJumpBufferCoyoteTime();
         anim.SetBool("isOnGround", !currentlyJumping);
+
+        Debug.Log("gravMultiplier 값: " + gravMultiplier + ", customGravity 값: " + customGravity);
     }
 
     private void FixedUpdate()
@@ -88,6 +96,7 @@ public class CharacterJump : MonoBehaviour
             {
                 // 캐릭터가 움직이는 플랫폼 등 (땅에) 있으면 중력 안 바꾸기 
                 gravMultiplier = defaultGravityScale;
+                Debug.Log("땅에 있음: " + gravMultiplier);
             }
             else
             {
@@ -98,16 +107,19 @@ public class CharacterJump : MonoBehaviour
                     if (pressingJump && currentlyJumping)
                     {
                         gravMultiplier = upwardMovementMultiplier;
+                        Debug.Log("상승 중, 점프 키 누름: " + gravMultiplier);
                     }
                     // 플레이어가 점프키 떼면 하강하기
                     else
                     {
                         gravMultiplier = jumpCutOff;
+                        Debug.Log("상승 중, 점프 키 뗌: " + gravMultiplier);
                     }
                 }
                 else
                 {
                     gravMultiplier = upwardMovementMultiplier;
+                    Debug.Log("상승 중, 기본 설정: " + gravMultiplier);
                 }
             }
         }
@@ -120,11 +132,13 @@ public class CharacterJump : MonoBehaviour
             // 캐릭터가 움직이는 플랫폼 등 (땅에) 있으면 중력 안 바꾸기 
             {
                 gravMultiplier = defaultGravityScale;
+                Debug.Log("하강 중, 땅에 있음: " + gravMultiplier);
             }
             else
             {
                 // 그렇지 않다면, 중력 곱하기
                 gravMultiplier = downwardMovementMultiplier;
+                Debug.Log("하강 중, 공중에 있음: " + gravMultiplier);
             }
 
         }
@@ -137,6 +151,7 @@ public class CharacterJump : MonoBehaviour
             }
 
             gravMultiplier = defaultGravityScale;
+            Debug.Log("정지 상태: " + gravMultiplier);
         }
 
         // 캐릭터 속도 조절
@@ -152,6 +167,8 @@ public class CharacterJump : MonoBehaviour
 
         // 커스텀 중력 설정
         customGravity = new Vector3(0, newGravity.y, 0) * gravMultiplier;
+
+        Debug.Log("적용된 customGravity: " + customGravity);
 
         // 매 프레임마다 커스텀 중력 적용
         rb.AddForce(customGravity, ForceMode.Acceleration);
