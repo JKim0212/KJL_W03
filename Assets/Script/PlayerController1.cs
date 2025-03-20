@@ -2,10 +2,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.InputSystem;
-
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
