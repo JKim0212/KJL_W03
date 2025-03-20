@@ -536,7 +536,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 1}
+  m_Size: {x: 1.5, y: 1.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &382172049
 MeshRenderer:
@@ -3134,6 +3134,7 @@ SceneRoots:
   - {fileID: 1209051905}
   - {fileID: 1539828548}
   - {fileID: 1789767751}
+  - {fileID: 1287384082}
   - {fileID: 647634635}
   - {fileID: 1458981716}
   - {fileID: 1034050779}
@@ -3143,7 +3144,6 @@ SceneRoots:
   - {fileID: 838825422}
   - {fileID: 2146469259}
   - {fileID: 382172051}
-  - {fileID: 1287384082}
   - {fileID: 1813053562}
   - {fileID: 1593634399}
   - {fileID: 706611330}

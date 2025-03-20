@@ -1,6 +1,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class ControlPlayer : MonoBehaviour
 {
@@ -59,25 +60,21 @@ public class ControlPlayer : MonoBehaviour
             else accelation = accelation < 0 ? accelation + 1 : 0;
         }
 
-        if (input.x != 0)
-        {
-            Vector3 rot = Quaternion.Lerp(rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f).eulerAngles;
-
-            if (rot.y < 180f && rot.y > 45f) rot.y = 45f;
-            else if (rot.y > 180f && rot.y < 315f) rot.y = -45f;
-
-            rb.rotation = Quaternion.Euler(rot);
-        }
-        else
-        {
-            rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
-        }
+        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * moveSpeed);
 
         mesh.Rotate((500f + 5f * accelation) * Time.deltaTime * Vector3.right);
 
-        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * moveSpeed);
-    }
+        // 위는 전진, 아래는 좌우이동
 
+        if (input.x != 0) rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f);
+        else rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
+
+        // 좌우 각도가 너무 틀어지지 않도록 보정
+        Vector3 nowRotation = rb.rotation.eulerAngles;
+        if (nowRotation.y < 180f && nowRotation.y > 45f) nowRotation.y = 45f;
+        else if (nowRotation.y > 180f && nowRotation.y < 315f) nowRotation.y = -45f;
+        rb.rotation = Quaternion.Euler(nowRotation);
+    }
     public void MoveRail_()
     {
         isRail = true;
@@ -87,9 +84,9 @@ public class ControlPlayer : MonoBehaviour
 
     private void MoveRail()
     {
-        mesh.Rotate(500f * Time.deltaTime * Vector3.right);
+        transform.Translate(Vector3.forward * moveSpeed * 1.2f);
 
-        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * moveSpeed);
+        mesh.Rotate(600f * Time.deltaTime * Vector3.right); // 속도 1.2배니 회전도 1.2배
 
         return;
     }
@@ -120,13 +117,8 @@ public class ControlPlayer : MonoBehaviour
     {
         if (jump && isGround)
         {
-            if (isRail)
-            {
-                isRail = false;
-
-                rb.position += Vector3.up;
-            }
             isGround = false;
+            isRail = false;
             rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
         }
         else if (!isGround)

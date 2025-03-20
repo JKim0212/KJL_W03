@@ -17,17 +17,10 @@ public class Rail : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        /*collision.transform.position = new(transform.position.x, transform.position.y + 1f, collision.transform.position.z);
-        collision.transform.rotation = transform.rotation;*/
-    }
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Character"))
+        if (collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = new(transform.position.x, transform.position.y + 1f, collision.transform.position.z);
             collision.transform.rotation = transform.rotation;
-            collision.transform.GetComponent<ControlPlayer>().MoveForwardRail_();
         }
-    }*/
+    }
 }
