@@ -1,5 +1,6 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System.Collections;
 
 public class ControlPlayer : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ControlPlayer : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private float accelation = 0;
     private bool isGround = false;
+
+    private IEnumerator Booster;
 
     public void OnMove(InputValue value)
     {
@@ -27,6 +30,8 @@ public class ControlPlayer : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         mesh = transform.GetChild(0).GetComponent<Transform>();
+
+        Booster = MoveForwardBoosterDeceleration();
     }
 
     private void FixedUpdate()
@@ -44,7 +49,7 @@ public class ControlPlayer : MonoBehaviour
         }
         else if (input.y < 0)
         {
-            accelation = accelation > -20 ? accelation - 2 : -20;
+            accelation = accelation > -10 ? accelation - 2 : -10;
         }
         else
         {
@@ -61,6 +66,30 @@ public class ControlPlayer : MonoBehaviour
 
         //rb.position += movement/4f;
         //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, movement.z);
+    }
+
+    public IEnumerator MoveForwardBooster()
+    {
+        rb.linearVelocity = new(0, 0, 100f);
+
+        StopCoroutine(Booster);
+        Booster = MoveForwardBoosterDeceleration();
+        StartCoroutine(Booster);
+
+        yield break;
+    }
+
+    private IEnumerator MoveForwardBoosterDeceleration()
+    {
+        while (rb.linearVelocity.z > 0f)
+        {
+            rb.linearVelocity = new(0, 0, rb.linearVelocity.z - 1f);
+            yield return new WaitForFixedUpdate();
+        }
+
+        rb.linearVelocity = Vector3.zero;
+
+        yield break;
     }
 
     private void MoveSide()
