@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 public class CharacterMovement : MonoBehaviour
 {
     [Header("Basic Components")]
-    private Rigidbody rb;
-    CharacterGround ground;
     public Vector3 velocity;
     public bool onGround = true;
+    private Rigidbody rb;
+    CharacterGround ground;
+    
 
 
     [Header("Running")]
@@ -46,10 +47,7 @@ public class CharacterMovement : MonoBehaviour
         //Get velocity from Kit's Rigidbody 
         velocity = rb.linearVelocity;
 
-        if (onGround)
-        {
-            Move();
-        }
+        Move();
     }
 
 

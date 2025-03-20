@@ -279,9 +279,9 @@ MonoBehaviour:
   maxAcceleration: 85
   maxDecceleration: 85
   maxTurnSpeed: 260
-  maxAirAcceleration: 50
-  maxAirDeceleration: 50
-  maxAirTurnSpeed: 80
+  maxAirAcceleration: 20
+  maxAirDeceleration: 20
+  maxAirTurnSpeed: 100
 --- !u!114 &6707174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,18 +296,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
   onGround: 1
-  jumpHeight: 20
-  timeToJumpApex: 5
-  upwardMovementMultiplier: 1
-  downwardMovementMultiplier: 1
+  jumpHeight: 10
+  timeToJumpApex: 2
+  upwardMovementMultiplier: 2
+  downwardMovementMultiplier: 2
   maxAirJumps: 1
   variablejumpHeight: 0
   jumpCutOff: 1
   speedLimit: 20
-  coyoteTime: 0.3
-  jumpBuffer: 0.3
+  coyoteTime: 0.15
+  jumpBuffer: 0.15
   jumpSpeed: 0
-  gravMultiplier: 0
   canJumpAgain: 0
 --- !u!114 &6707175
 MonoBehaviour:
