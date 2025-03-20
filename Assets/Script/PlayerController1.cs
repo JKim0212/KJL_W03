@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class KYR_PlayerController : MonoBehaviour
+public class PlayerController1 : MonoBehaviour
 {
     [Header("Components")]
     Rigidbody _rb;
