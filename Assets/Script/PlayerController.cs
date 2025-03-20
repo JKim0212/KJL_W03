@@ -1,88 +1,78 @@
-using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Components")]
-    Rigidbody _rb;
-    [Header("Movement Stats")]
-    [SerializeField] float maxSpeed;
-    [SerializeField] float friction;
-    [SerializeField] float maxAcceleration;
-    [SerializeField] float maxAirAcceleration;
-    [SerializeField] float maxDecceleration;
-    [SerializeField] float maxAirDeceleration;
-    [SerializeField] float maxTurnSpeed;
-    [SerializeField] float maxAirTurnSpeed;
-
-    [Header("Calculations")]
-    Vector2 _dir;
-    float _dirX;
-    float _dirZ;
-    Vector3 desiredVelocity;
-    public Vector3 velocity;
-    private float maxSpeedChange;
-    private float acceleration;
-    private float deceleration;
-    private float turnSpeed;
-
-    [Header("Current State")]
-    [SerializeField] bool _pressingKey;
-    [SerializeField] bool _isOnGround = true;
+    private Rigidbody rb;
+    [SerializeField] private float movespeed;
+    [SerializeField] private bool isGround;
+    private Vector2 input;
+    private float jump;
 
     public void OnMove(InputValue value)
     {
-        _dir = value.Get<Vector2>();
-        _dirX = _dir.x;
-        _dirZ = _dir.y;
-    }
-    private void Awake()
-    {
-        //Find the character's Rigidbody and ground detection script
-        _rb = GetComponent<Rigidbody>();
+        input = value.Get<Vector2>();
     }
 
-    void Update()
+    public void OnJump(InputValue value)
     {
-        if (_dirX != 0 || _dirZ != 0)
+        jump = value.Get<float>();
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.maxLinearVelocity = 10;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        Vector3 movement = new Vector3(0f, 0f, 1 + 0.5f * input.y);
+
+        movement *= movespeed;
+
+        //rb.AddForce(movement, ForceMode.Impulse);
+
+        //rb.position += movement/4f;
+        //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, movement.z);
+        transform.Translate(movement);
+
+        rb.rotation = Quaternion.Euler(Vector3.zero);
+
+        if (isGround)
         {
-            _pressingKey = true;
+            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
+        }
+        else if(input.y!=0)
+        {
+            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 60f);
         }
         else
         {
-            _pressingKey = false;
+            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 30f);
         }
-        desiredVelocity = new Vector3(_dirX, 0f, _dirZ) * maxSpeed;
-    }
 
-    void FixedUpdate()
-    {
-        velocity = _rb.linearVelocity;
-        RunWithAcceleration();
-    }
+            /*float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+            Vector3 movement = new Vector3(horizontal * 5f * Time.deltaTime, 0f, vertical * 5f * Time.deltaTime);
 
-    void RunWithAcceleration()
-    {
-        acceleration = _isOnGround ? maxAcceleration : maxAirAcceleration;
-        deceleration = _isOnGround ? maxDecceleration : maxAirDeceleration;
-        if (_pressingKey)
+            //_rb.MovePosition(transform.position+movement);
+
+            cc.Move(movement);*/
+            Debug.Log(jump);
+        if (jump>0.5f && isGround)
         {
-            Debug.Log("Pressing");
-            // if (Mathf.Sign(_dirX) != Mathf.Sign(velocity.x) || Mathf.Sign(_dirZ) != Mathf.Sign(velocity.z))
-            // {
-            //     maxSpeedChange = turnSpeed * Time.deltaTime;
-            // }
-            // else
-            // {
-            //     //If they match, it means we're simply running along and so should use the acceleration stat
-            //     maxSpeedChange = acceleration * Time.deltaTime;
-            // }
-            maxSpeedChange = acceleration * Time.deltaTime;
-            velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
-            velocity.z = Mathf.MoveTowards(velocity.z, desiredVelocity.z, maxSpeedChange);
+            isGround = false;
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+        }
+    }
 
-            _rb.linearVelocity = new Vector3(velocity.x, _rb.linearVelocity.y, velocity.z);
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ground") && !isGround){
+            isGround = true;
         }
     }
 }
