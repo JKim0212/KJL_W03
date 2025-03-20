@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollowController : MonoBehaviour
+public class ControlCameraFollower : MonoBehaviour
 {
     [SerializeField] Transform character;
 
