@@ -16,6 +16,8 @@ public class CharacterJump : MonoBehaviour
     public float timeToJumpApex = 2f; // 최고 높이까지 걸리는 시간
     public float upwardMovementMultiplier = 2f; // 상승 중력 곱하기
     public float downwardMovementMultiplier = 2f; // 하강 중력 곱하기
+    public float runJumpMultiplier = 1f; // 달릴 때 점프 파워 배율
+    public float doubleJumpMultiplier = 0.8f; // 더블 점프 시 점프 파워 배율
     public int maxAirJumps = 1; // 최대 추가 점프 횟수
     public bool variablejumpHeight = false; // 점프키에 손 떼면 떨어지게 할 것인가?(입력 시간에 따른 점프 높이 변화)
     public float jumpCutOff = 1; // 점프키 손 떼면 중력 곱하기
@@ -201,6 +203,7 @@ public class CharacterJump : MonoBehaviour
             coyoteTimeCounter = 0;
 
             // 더블 점프 허용 시 한번 더 점프하도록 함
+            bool isDoubleJump = !onGround && canJumpAgain;
             canJumpAgain = (maxAirJumps == 1 && canJumpAgain == false);
 
             // 값들을 바탕으로 점프 파워 정하기
@@ -208,17 +211,19 @@ public class CharacterJump : MonoBehaviour
 
             // 점프 중에 캐릭터가 위 혹은 아래로 이동한다면(더블 점프 등), 점프 스피드 변경
             // 현재 속도에 관계없이 점프 힘이 일정하도록 함
-            if (velocity.y > 0f)
+            float horizontalSpeed = new Vector2(velocity.x, velocity.z).magnitude;
+            if (horizontalSpeed > 0.1f)
             {
-                jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
-            }
-            else if (velocity.y < 0f)
-            {
-                jumpSpeed += Mathf.Abs(rb.linearVelocity.y);
+                jumpSpeed *= runJumpMultiplier;
             }
 
-            // 새로운 점프 스피드를 더하기
-            velocity.y += jumpSpeed;
+            if (isDoubleJump)
+            {
+                jumpSpeed *= doubleJumpMultiplier;
+            }
+
+            // 기존 속도를 무시하고 새로운 점프 스피드를 더하기
+            velocity.y = jumpSpeed;
             currentlyJumping = true;
         }
 
