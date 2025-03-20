@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class CharacterGround : MonoBehaviour
@@ -14,40 +15,44 @@ public class CharacterGround : MonoBehaviour
 
     private void Update()
     {
-        // colliderOffset Ä¡È¯
+        // colliderOffset ì¹˜í™˜
         Vector3 offset1 = new Vector3(colliderOffset.x, 0, colliderOffset.z);
         Vector3 offset2 = new Vector3(colliderOffset.x, 0, -colliderOffset.z);
         Vector3 offset3 = new Vector3(-colliderOffset.x, 0, colliderOffset.z);
         Vector3 offset4 = new Vector3(-colliderOffset.z, 0, -colliderOffset.z);
 
-        // ÇÃ·¹ÀÌ¾î°¡ groundLayer¿¡ À§Ä¡ÇÏ´Â°¡ È®ÀÎ
-        // ±âÁ¸ÄÚµå´Â 2°³ »ç¿ë, ÇöÀç ÄÚµå´Â 4°³ »ç¿ë
+        // í”Œë ˆì´ì–´ê°€ groundLayerì— ìœ„ì¹˜í•˜ëŠ”ê°€ í™•ì¸
+        // ê¸°ì¡´ì½”ë“œëŠ” 2ê°œ ì‚¬ìš©, í˜„ì¬ ì½”ë“œëŠ” 4ê°œ ì‚¬ìš©
+        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3 (0f, -0.5f, 0f), new Vector3(0.95f, 0.4f, 0.95f), Quaternion.identity, groundLayer);
+        // bool _rayHit = Physics.BoxCast(transform.position, new Vector3 (0.95f, 0.6f, 0.95f), Vector3.down, transform.rotation, groundLength, groundLayer);
         bool _rayHit1 = Physics.Raycast(transform.position + offset1, Vector3.down, groundLength, groundLayer);
         bool _rayHit2 = Physics.Raycast(transform.position + offset2, Vector3.down, groundLength, groundLayer);
         bool _rayHit3 = Physics.Raycast(transform.position + offset3, Vector3.down, groundLength, groundLayer);
         bool _rayHit4 = Physics.Raycast(transform.position + offset4, Vector3.down, groundLength, groundLayer);
 
-        onGround = _rayHit1 || _rayHit2 || _rayHit3 || _rayHit4;
+        // onGround = _rayHit1 || _rayHit2 || _rayHit3 || _rayHit4;
+        onGround = cols.Length != 0;
 
 
     }
 
     private void OnDrawGizmos()
     {
-        // colliderOffset Ä¡È¯
+        // // colliderOffset ì¹˜í™˜
         Vector3 offset1 = new Vector3(colliderOffset.x, 0, colliderOffset.z);
         Vector3 offset2 = new Vector3(colliderOffset.x, 0, -colliderOffset.z);
         Vector3 offset3 = new Vector3(-colliderOffset.x, 0, colliderOffset.z);
         Vector3 offset4 = new Vector3(-colliderOffset.z, 0, -colliderOffset.z);
 
 
-        // ±âÁî¸ğ ±×¸®±â
-        // ´êÀ¸¸é ÃÊ·Ï»ö, ´êÁö ¾ÊÀ¸¸é »¡°£»ö
+        // // ê¸°ì¦ˆëª¨ ê·¸ë¦¬ê¸°
+        // // ë‹¿ìœ¼ë©´ ì´ˆë¡ìƒ‰, ë‹¿ì§€ ì•Šìœ¼ë©´ ë¹¨ê°„ìƒ‰
         if (onGround) { Gizmos.color = Color.green; } else { Gizmos.color = Color.red; }
         Gizmos.DrawLine(transform.position + offset1, transform.position + offset1 + Vector3.down * groundLength);
         Gizmos.DrawLine(transform.position + offset2, transform.position + offset2 + Vector3.down * groundLength);
         Gizmos.DrawLine(transform.position + offset3, transform.position + offset3 + Vector3.down * groundLength);
         Gizmos.DrawLine(transform.position + offset4, transform.position + offset4 + Vector3.down * groundLength);
+        // Gizmos.DrawWireCube(transform.position, new Vector3 (0.95f, 1.2f, 0.95f));
     }
 
     //Send ground detection to other scripts
