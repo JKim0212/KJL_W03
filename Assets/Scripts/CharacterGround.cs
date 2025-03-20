@@ -15,10 +15,10 @@ public class CharacterGround : MonoBehaviour
     private void Update()
     {
         // colliderOffset 치환
-        Vector3 offset1 = new Vector3(colliderOffset.x, 0, 0);
-        Vector3 offset2 = new Vector3(-colliderOffset.x, 0, 0);
-        Vector3 offset3 = new Vector3(0, 0, colliderOffset.z);
-        Vector3 offset4 = new Vector3(0, 0, -colliderOffset.z);
+        Vector3 offset1 = new Vector3(colliderOffset.x, 0, colliderOffset.z);
+        Vector3 offset2 = new Vector3(colliderOffset.x, 0, -colliderOffset.z);
+        Vector3 offset3 = new Vector3(-colliderOffset.x, 0, colliderOffset.z);
+        Vector3 offset4 = new Vector3(-colliderOffset.z, 0, -colliderOffset.z);
 
         // 플레이어가 groundLayer에 위치하는가 확인
         // 기존코드는 2개 사용, 현재 코드는 4개 사용
@@ -35,10 +35,10 @@ public class CharacterGround : MonoBehaviour
     private void OnDrawGizmos()
     {
         // colliderOffset 치환
-        Vector3 offset1 = new Vector3(colliderOffset.x, 0, 0);
-        Vector3 offset2 = new Vector3(-colliderOffset.x, 0, 0);
-        Vector3 offset3 = new Vector3(0, 0, colliderOffset.z);
-        Vector3 offset4 = new Vector3(0, 0, -colliderOffset.z);
+        Vector3 offset1 = new Vector3(colliderOffset.x, 0, colliderOffset.z);
+        Vector3 offset2 = new Vector3(colliderOffset.x, 0, -colliderOffset.z);
+        Vector3 offset3 = new Vector3(-colliderOffset.x, 0, colliderOffset.z);
+        Vector3 offset4 = new Vector3(-colliderOffset.z, 0, -colliderOffset.z);
 
 
         // 기즈모 그리기
