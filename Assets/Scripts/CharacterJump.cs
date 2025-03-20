@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations;
 
 public class CharacterJump : MonoBehaviour
 {
@@ -32,12 +33,14 @@ public class CharacterJump : MonoBehaviour
     private bool pressingJump;
     private bool currentlyJumping;
 
+    Animator anim;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         ground = GetComponent<CharacterGround>();
         defaultGravityScale = 1f;
+        anim = GetComponent<Animator>();
     }
 
 
@@ -46,14 +49,13 @@ public class CharacterJump : MonoBehaviour
     {
         setPhysics();
 
-        //Check if we're on ground, using Kit's Ground script
+        // Check if we're on ground, using Kit's Ground script
         onGround = ground.GetOnGround();
-
-        Debug.Log(onGround);
 
         CheckJumpButton();
 
         CheckJumpBufferCoyoteTime();
+        anim.SetBool("isOnGround", !currentlyJumping);
     }
 
     private void FixedUpdate()
@@ -159,7 +161,7 @@ public class CharacterJump : MonoBehaviour
     private void CheckJumpButton()
     {
         // 점프 버튼 입력 확인
-        if (Input.GetButtonDown("Jump")) // "Jump"는 Unity의 Input 설정에서 정의된 이름입니다.
+        if (Input.GetButtonDown("Jump"))
         {
             desiredJump = true;
             pressingJump = true;
@@ -214,7 +216,7 @@ public class CharacterJump : MonoBehaviour
     private void CheckJumpBufferCoyoteTime()
     {
         // Check if we're on ground, using Kit's Ground script
-        // onGround = ground.GetOnGround();
+        onGround = ground.GetOnGround();
 
         // 점프 버퍼가 0보다 크면 예비 입력이 되도록
         if (jumpBuffer > 0)
