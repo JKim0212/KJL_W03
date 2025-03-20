@@ -1,14 +1,13 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
-using Unity.VisualScripting;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody rb;
-    [SerializeField]bool isGround = true;
-    Vector2 input;
-    float jump;
+    private Rigidbody rb;
+    [SerializeField] private float movespeed;
+    [SerializeField] private bool isGround;
+    private Vector2 input;
+    private float jump;
 
     public void OnMove(InputValue value)
     {
@@ -30,17 +29,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(0f, 0f, input.y);
+        Vector3 movement = new Vector3(0f, 0f, 1 + 0.5f * input.y);
 
-        movement.Normalize();
-        movement /= 3f;
+        movement *= movespeed;
 
         //rb.AddForce(movement, ForceMode.Impulse);
 
         //rb.position += movement/4f;
         //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, movement.z);
         transform.Translate(movement);
-        //transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
+
+        rb.rotation = Quaternion.Euler(Vector3.zero);
+
         if (isGround)
         {
             transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
