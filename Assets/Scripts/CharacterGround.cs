@@ -23,12 +23,12 @@ public class CharacterGround : MonoBehaviour
 
         // 플레이어가 groundLayer에 위치하는가 확인
         // 기존코드는 2개 사용, 현재 코드는 4개 사용
-        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3 (0f, -0.5f, 0f), new Vector3(0.94f/2, 0.3f, 0.94f/2), Quaternion.identity, groundLayer);
-        // bool _rayHitBox = Physics.BoxCast(transform.position, new Vector3 (0.95f, 0.6f, 0.95f), Vector3.down, transform.rotation, groundLength, groundLayer);
-        // bool _rayHit1 = Physics.Raycast(transform.position + offset1, Vector3.down, groundLength, groundLayer);
-        // bool _rayHit2 = Physics.Raycast(transform.position + offset2, Vector3.down, groundLength, groundLayer);
-        // bool _rayHit3 = Physics.Raycast(transform.position + offset3, Vector3.down, groundLength, groundLayer);
-        // bool _rayHit4 = Physics.Raycast(transform.position + offset4, Vector3.down, groundLength, groundLayer);
+        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3 (0f, -0.5f, 0f), new Vector3(0.95f, 0.4f, 0.95f), Quaternion.identity, groundLayer);
+        // bool _rayHit = Physics.BoxCast(transform.position, new Vector3 (0.95f, 0.6f, 0.95f), Vector3.down, transform.rotation, groundLength, groundLayer);
+        bool _rayHit1 = Physics.Raycast(transform.position + offset1, Vector3.down, groundLength, groundLayer);
+        bool _rayHit2 = Physics.Raycast(transform.position + offset2, Vector3.down, groundLength, groundLayer);
+        bool _rayHit3 = Physics.Raycast(transform.position + offset3, Vector3.down, groundLength, groundLayer);
+        bool _rayHit4 = Physics.Raycast(transform.position + offset4, Vector3.down, groundLength, groundLayer);
 
         // onGround = _rayHit1 || _rayHit2 || _rayHit3 || _rayHit4;
         onGround = cols.Length != 0;
@@ -48,11 +48,11 @@ public class CharacterGround : MonoBehaviour
         // // 기즈모 그리기
         // // 닿으면 초록색, 닿지 않으면 빨간색
         if (onGround) { Gizmos.color = Color.green; } else { Gizmos.color = Color.red; }
-        // Gizmos.DrawLine(transform.position + offset1, transform.position + offset1 + Vector3.down * groundLength);
-        // Gizmos.DrawLine(transform.position + offset2, transform.position + offset2 + Vector3.down * groundLength);
-        // Gizmos.DrawLine(transform.position + offset3, transform.position + offset3 + Vector3.down * groundLength);
-        // Gizmos.DrawLine(transform.position + offset4, transform.position + offset4 + Vector3.down * groundLength);
-        Gizmos.DrawWireCube(transform.position + new Vector3(0f, -0.5f, 0f), new Vector3 (0.94f, 0.6f, 0.94f));
+        Gizmos.DrawLine(transform.position + offset1, transform.position + offset1 + Vector3.down * groundLength);
+        Gizmos.DrawLine(transform.position + offset2, transform.position + offset2 + Vector3.down * groundLength);
+        Gizmos.DrawLine(transform.position + offset3, transform.position + offset3 + Vector3.down * groundLength);
+        Gizmos.DrawLine(transform.position + offset4, transform.position + offset4 + Vector3.down * groundLength);
+        // Gizmos.DrawWireCube(transform.position, new Vector3 (0.95f, 1.2f, 0.95f));
     }
 
     //Send ground detection to other scripts
