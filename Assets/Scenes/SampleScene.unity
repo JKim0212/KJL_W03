@@ -4840,10 +4840,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 706611329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a1c5a360f7c10a4ba9e7576a66acab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3382d749a2566824ea23bafe5c0d6c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 1593634399}
+  Character: {fileID: 1593634399}
 --- !u!1 &721485454
 GameObject:
   m_ObjectHideFlags: 0
