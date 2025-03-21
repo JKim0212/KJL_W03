@@ -1,78 +1,86 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
-using Unity.VisualScripting;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody rb;
-    [SerializeField]bool isGround = true;
-    Vector2 input;
-    float jump;
+    Rigidbody _rb;
+    [SerializeField]
+    bool _isGround = true;
+    Vector3 _moveInput;
+    float _speed = 7f;
+    float _jumpForce = 8f;
+    float _rotationSpeed;
+    float _airSpeedMultiplier = 0.5f;
+    Vector3 _initialJumpVelocity;
 
-    public void OnMove(InputValue value)
-    {
-        input = value.Get<Vector2>();
-    }
+    [SerializeField]
+    Transform _cameraTransform; // 카메라 Transform (Inspector에서 할당)
 
-    public void OnJump(InputValue value)
-    {
-        jump = value.Get<float>();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.maxLinearVelocity = 10;
+        _rb = GetComponent<Rigidbody>();
+        if (_cameraTransform == null)
+        {
+            _cameraTransform = Camera.main.transform; // 기본 메인 카메라 사용
+        }
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(0f, 0f, input.y);
+        // 카메라 기준 이동 방향 계산
+        Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
+        Vector3 moveDirection = _cameraTransform.TransformDirection(inputDirection);
+        moveDirection.y = 0f; // Y축 이동 제거
+        moveDirection.Normalize();
 
-        movement.Normalize();
-        movement /= 3f;
-
-        //rb.AddForce(movement, ForceMode.Impulse);
-
-        //rb.position += movement/4f;
-        //rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, movement.z);
-        transform.Translate(movement);
-        //transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
-        if (isGround)
+        if (_isGround)
         {
-            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 90f);
-        }
-        else if(input.y!=0)
-        {
-            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 60f);
+            _rb.linearVelocity = moveDirection * _speed + Vector3.up * _rb.linearVelocity.y;
         }
         else
         {
-            transform.Rotate(Vector3.up * Time.deltaTime * input.x * 30f);
+            float airSpeed = _speed * _airSpeedMultiplier;
+            Vector3 targetHorizontalVelocity = _initialJumpVelocity + moveDirection * airSpeed;
+            Vector3 currentHorizontalVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+            Vector3 newHorizontalVelocity = Vector3.Lerp(currentHorizontalVelocity, targetHorizontalVelocity, Time.fixedDeltaTime * 5f);
+            _rb.linearVelocity = newHorizontalVelocity + Vector3.up * _rb.linearVelocity.y;
         }
 
-            /*float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-            Vector3 movement = new Vector3(horizontal * 5f * Time.deltaTime, 0f, vertical * 5f * Time.deltaTime);
-
-            //_rb.MovePosition(transform.position+movement);
-
-            cc.Move(movement);*/
-            Debug.Log(jump);
-        if (jump>0.5f && isGround)
-        {
-            isGround = false;
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
-        }
+        LookForward(moveDirection); // 이동 방향을 LookForward에 전달
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ground") && !isGround){
-            isGround = true;
+        if (collision.gameObject.CompareTag("Ground") && !_isGround)
+        {
+            _isGround = true;
+        }
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        _moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed && _isGround)
+        {
+            _isGround = false;
+            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _initialJumpVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z); // 점프 시 초기 속도 저장
+        }
+    }
+
+    void LookForward(Vector3 moveDirection)
+    {
+        if (_moveInput.magnitude > 0.1f)
+        {
+            if (_isGround) _rotationSpeed = 8f;
+            else _rotationSpeed = 3f;
+
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            _rb.rotation = Quaternion.Slerp(_rb.rotation, targetRotation, Time.fixedDeltaTime * _rotationSpeed);
         }
     }
 }
