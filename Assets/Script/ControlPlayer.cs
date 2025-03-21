@@ -10,6 +10,7 @@ public class ControlPlayer : MonoBehaviour
 
     private Rigidbody rb;
     private Transform mesh;
+    public GameObject nowRail = null;
 
     [SerializeField] private float moveSpeed;
     private float accelation = 0;
@@ -157,6 +158,11 @@ public class ControlPlayer : MonoBehaviour
     public bool GetIsRail()
     {
         return isRail;
+    }
+
+    public void SetIsRail(bool newState)
+    {
+        isRail = newState;
     }
 
     public void SetIsWeb(bool newState)

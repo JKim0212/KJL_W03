@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Rail : MonoBehaviour
 {
+    [SerializeField] private bool prohibitJump;
     private Vector3 thisRotation;
     private readonly float rad = Mathf.PI / 180f;
 
@@ -12,32 +13,42 @@ public class Rail : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        collider.transform.position = GetPosition(collider.transform.position);
-        collider.transform.rotation = transform.rotation;
-
         if (collider.gameObject.CompareTag("Character"))
         {
+            collider.transform.position = GetPosition(collider.transform.position);
+            collider.transform.rotation = transform.rotation;
+
+            collider.transform.GetComponent<ControlPlayer>().nowRail = gameObject;
             collider.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        collision.transform.position = GetPosition(collision.transform.position);
-        collision.transform.rotation = transform.rotation;
-
         if (collision.gameObject.CompareTag("Character"))
         {
+            collision.transform.position = GetPosition(collision.transform.position);
+            collision.transform.rotation = transform.rotation;
+
             collision.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.GetComponent<ControlPlayer>().GetIsRail())
+        if (collision.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = GetPosition(collision.transform.position);
             collision.transform.rotation = transform.rotation;
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collider.gameObject.CompareTag("Character"))
+        {
+            collider.transform.GetComponent<ControlPlayer>().SetIsRail(false);
+            collider.transform.GetComponent<ControlPlayer>().nowRail = null;
         }
     }
 
