@@ -15,6 +15,7 @@ public class ControlPlayer : MonoBehaviour
     private float accelation = 0;
     private bool isGround = false;
     private bool isRail = false;
+    private bool isWeb = false;
 
     private IEnumerator Booster;
 
@@ -45,7 +46,11 @@ public class ControlPlayer : MonoBehaviour
 
     private void Move()
     {
-        if (input.y > 0)
+        if (isWeb)
+        {
+            accelation = -40;
+        }
+        else if (input.y > 0)
         {
             accelation = accelation < 20 ? accelation + 1 : 20;
         }
@@ -60,9 +65,9 @@ public class ControlPlayer : MonoBehaviour
             else accelation = accelation < 0 ? accelation + 1 : 0;
         }
 
-        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * moveSpeed);
+        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f * moveSpeed));
 
-        mesh.Rotate((500f + 5f * accelation) * Time.deltaTime * Vector3.right);
+        mesh.Rotate((500f + 10f * accelation) * Time.deltaTime * Vector3.right); // 가속 1단위는 기본 속도의 2%
 
         // 위는 전진, 아래는 좌우이동
 
@@ -105,6 +110,7 @@ public class ControlPlayer : MonoBehaviour
         while (rb.linearVelocity.z > 0f)
         {
             rb.linearVelocity = new(0, rb.linearVelocity.y, rb.linearVelocity.z - 1f);
+            mesh.Rotate(20f*rb.linearVelocity.z * Time.deltaTime * Vector3.right);
             yield return new WaitForFixedUpdate();
         }
 
@@ -125,9 +131,9 @@ public class ControlPlayer : MonoBehaviour
         {
             Vector3 nowVelocity = rb.linearVelocity;
 
-            if (nowVelocity.y < -12f)
+            if (nowVelocity.y < -40f)
             {
-                nowVelocity.y = -12f;
+                nowVelocity.y = -40f;
                 rb.linearVelocity = nowVelocity;
             }
             else if (nowVelocity.y < 0f)
@@ -139,12 +145,19 @@ public class ControlPlayer : MonoBehaviour
                 nowVelocity.y = -0.2f;
                 rb.linearVelocity = nowVelocity;
             }
+
+            Debug.Log(rb.linearVelocity.y);
         }
     }
 
     public bool GetIsRail()
     {
         return isRail;
+    }
+
+    public void SetIsWeb(bool newState)
+    {
+        isWeb = newState;
     }
 
     void OnCollisionEnter(Collision collision)
