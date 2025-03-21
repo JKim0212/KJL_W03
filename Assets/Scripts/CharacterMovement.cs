@@ -12,16 +12,16 @@ public class CharacterMovement : MonoBehaviour
 
 
     [Header("Running")]
-    public float directionX; // Input °ª È®ÀÎ(-1 ~ 1)
-    public float directionZ; // Input °ª È®ÀÎ(-1 ~ 1)
-    public float maxSpeed = 14f; // ÃÖ°í ¼Óµµ
-    public float maxAcceleration = 85f; // °¡¼Óµµ(¾ó¸¶³ª ºü¸£°Ô ÃÖ°í¼Óµµ µµ´Ş)
-    public float maxDecceleration = 85; // °¨¼Óµµ(¾ó¸¶³ª ºü¸£°Ô Á¤Áö µµ´Ş)
-    public float maxTurnSpeed = 260f; // ¹æÇâ ÀüÈ¯ ¼Óµµ
-    public float maxAirAcceleration = 50; // °øÁß °¡¼Óµµ(°øÁß¿¡¼­ ¾ó¸¶³ª ºü¸£°Ô ÃÖ°í¼Óµµ µµ´Ş)
-    public float maxAirDeceleration = 50; // °øÁß °¨¼Óµµ(°øÁß¿¡¼­ ¾ó¸¶³ª ºü¸£°Ô Á¤Áö µµ´Ş)
-    public float maxAirTurnSpeed = 80f; // °øÁß ¹æÇâ ÀüÈ¯ ¼Óµµ
-    private float friction; // ¸¶Âû·Â(¾²ÀÌÁö ¾ÊÀ½)
+    public float directionX; // Input ê°’ í™•ì¸(-1 ~ 1)
+    public float directionZ; // Input ê°’ í™•ì¸(-1 ~ 1)
+    public float maxSpeed = 14f; // ìµœê³  ì†ë„
+    public float maxAcceleration = 85f; // ê°€ì†ë„(ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ìµœê³ ì†ë„ ë„ë‹¬)
+    public float maxDecceleration = 85; // ê°ì†ë„(ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ì •ì§€ ë„ë‹¬)
+    public float maxTurnSpeed = 260f; // ë°©í–¥ ì „í™˜ ì†ë„
+    public float maxAirAcceleration = 50; // ê³µì¤‘ ê°€ì†ë„(ê³µì¤‘ì—ì„œ ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ìµœê³ ì†ë„ ë„ë‹¬)
+    public float maxAirDeceleration = 50; // ê³µì¤‘ ê°ì†ë„(ê³µì¤‘ì—ì„œ ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ì •ì§€ ë„ë‹¬)
+    public float maxAirTurnSpeed = 80f; // ê³µì¤‘ ë°©í–¥ ì „í™˜ ì†ë„
+    private float friction; // ë§ˆì°°ë ¥(ì“°ì´ì§€ ì•ŠìŒ)
     //------------------------
     private Vector3 desiredVelocity;
     private float maxSpeedChange;
@@ -53,69 +53,69 @@ public class CharacterMovement : MonoBehaviour
 
     private void Move()
     {
-        // isGrounded µû¶ó Àû¿ëµÇ´Â °ª º¯°æ(acc, dec, turn)
+        // isGrounded ë”°ë¼ ì ìš©ë˜ëŠ” ê°’ ë³€ê²½(acc, dec, turn)
         acceleration = onGround ? maxAcceleration : maxAirAcceleration;
         deceleration = onGround ? maxDecceleration : maxAirDeceleration;
         turnSpeed = onGround ? maxTurnSpeed : maxAirTurnSpeed;
 
-        // ÁÂ¿ì, ÀüÈÄ Input °ª ¹Ş±â(-1 ~ 1 »çÀÌ)
+        // ì¢Œìš°, ì „í›„ Input ê°’ ë°›ê¸°(-1 ~ 1 ì‚¬ì´)
         directionX = Input.GetAxis("Horizontal");
         directionZ = Input.GetAxis("Vertical");
 
-        // Ä«¸Ş¶óÀÇ ¹æÇâÀ» ±âÁØÀ¸·Î ÀÌµ¿
+        // ì¹´ë©”ë¼ì˜ ë°©í–¥ì„ ê¸°ì¤€ìœ¼ë¡œ ì´ë™
         Vector3 forward = Camera.main.transform.TransformDirection(Vector3.forward);
         Vector3 right = Camera.main.transform.TransformDirection(Vector3.right);
 
-        forward.y = 0; // YÃà ¹æÇâÀº ¹«½Ã
-        right.y = 0; // YÃà ¹æÇâÀº ¹«½Ã
+        forward.y = 0; // Yì¶• ë°©í–¥ì€ ë¬´ì‹œ
+        right.y = 0; // Yì¶• ë°©í–¥ì€ ë¬´ì‹œ
 
         forward.Normalize();
         right.Normalize();
 
-        // ¿øÇÏ´Â ¼Óµµ °è»ê
+        // ì›í•˜ëŠ” ì†ë„ ê³„ì‚°
         desiredVelocity = (forward * directionZ + right * directionX) * maxSpeed;
 
-        // YÃà ¼Óµµ Ãß°¡
-        desiredVelocity.y = rb.linearVelocity.y; // ÇöÀç YÃà ¼Óµµ¸¦ À¯Áö
+        // Yì¶• ì†ë„ ì¶”ê°€
+        desiredVelocity.y = rb.linearVelocity.y; // í˜„ì¬ Yì¶• ì†ë„ë¥¼ ìœ ì§€
 
-        // XÃà ¿òÁ÷ÀÓ
+        // Xì¶• ì›€ì§ì„
         if (directionX != 0 || directionZ != 0)
         {
-            // ÇöÀç ¹æÇâ°ú ÀÔ·Â ¹æÇâÀÌ ´Ù¸¥ °æ¿ì, ÅÍ´×À¸·Î ÀÎ½Ä
+            // í˜„ì¬ ë°©í–¥ê³¼ ì…ë ¥ ë°©í–¥ì´ ë‹¤ë¥¸ ê²½ìš°, í„°ë‹ìœ¼ë¡œ ì¸ì‹
             if (Mathf.Sign(directionX) != Mathf.Sign(velocity.x) || Mathf.Sign(directionZ) != Mathf.Sign(velocity.z))
             {
                 maxSpeedChange = turnSpeed * Time.deltaTime;
             }
             else
             {
-                // ÇöÀç ¹æÇâ°ú ÀÔ·Â ¹æÇâÀÌ °°Àº °æ¿ì, °¡¼Ó ½ÃÀÛ
+                // í˜„ì¬ ë°©í–¥ê³¼ ì…ë ¥ ë°©í–¥ì´ ê°™ì€ ê²½ìš°, ê°€ì† ì‹œì‘
                 maxSpeedChange = acceleration * Time.deltaTime;
             }
         }
         else
         {
-            // ÀÔ·ÂÀÌ ÀüÇô ¾øÀ¸¸é, °¨¼Ó
+            // ì…ë ¥ì´ ì „í˜€ ì—†ìœ¼ë©´, ê°ì†
             maxSpeedChange = deceleration * Time.deltaTime;
             
         }
 
-        // maxSpeedChange ¸¸Å­ XÃà, ZÃà ¼Óµµ °è»ê
+        // maxSpeedChange ë§Œí¼ Xì¶•, Zì¶• ì†ë„ ê³„ì‚°
         velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
         velocity.z = Mathf.MoveTowards(velocity.z, desiredVelocity.z, maxSpeedChange);
 
-        // »õ·Î¿î ¼Óµµ¸¦ rigidbody¿¡ ¾÷µ¥ÀÌÆ®
-        velocity.y = rb.linearVelocity.y; // YÃà ¼Óµµ À¯Áö
+        // ìƒˆë¡œìš´ ì†ë„ë¥¼ rigidbodyì— ì—…ë°ì´íŠ¸
+        velocity.y = rb.linearVelocity.y; // Yì¶• ì†ë„ ìœ ì§€
         rb.linearVelocity = velocity;
 
-        // ÇÃ·¹ÀÌ¾î È¸Àü
-        if (velocity.x != 0 || velocity.z != 0) // ÀÌµ¿ÇÏ´Â °æ¿ì¿¡¸¸ È¸Àü
+        // í”Œë ˆì´ì–´ íšŒì „
+        if (velocity.x != 0 || velocity.z != 0) // ì´ë™í•˜ëŠ” ê²½ìš°ì—ë§Œ íšŒì „
         {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, turnSpeed * Time.deltaTime);
         }
 
         /*
-        // ÇÃ·¹ÀÌ¾î È¸Àü
+        // í”Œë ˆì´ì–´ íšŒì „
         if (velocity != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(velocity);
@@ -124,7 +124,7 @@ public class CharacterMovement : MonoBehaviour
         */
 
 
-        Debug.Log("xÃà ¼Óµµ: " + velocity.x + ", zÃà ¼Óµµ: " + velocity.z);
+        Debug.Log("xì¶• ì†ë„: " + velocity.x + ", zì¶• ì†ë„: " + velocity.z);
     }
 
 }

@@ -12,16 +12,18 @@ public class CharacterJump : MonoBehaviour
     
 
     [Header("Jumping")]
-    public float jumpHeight = 7.3f; // ÃÖ°í Á¡ÇÁ ³ôÀÌ
-    public float timeToJumpApex = 2f; // ÃÖ°í ³ôÀÌ±îÁö °É¸®´Â ½Ã°£
-    public float upwardMovementMultiplier = 2f; // »ó½Â Áß·Â °öÇÏ±â
-    public float downwardMovementMultiplier = 2f; // ÇÏ°­ Áß·Â °öÇÏ±â
-    public int maxAirJumps = 1; // ÃÖ´ë Ãß°¡ Á¡ÇÁ È½¼ö
-    public bool variablejumpHeight = false; // Á¡ÇÁÅ°¿¡ ¼Õ ¶¼¸é ¶³¾îÁö°Ô ÇÒ °ÍÀÎ°¡?(ÀÔ·Â ½Ã°£¿¡ µû¸¥ Á¡ÇÁ ³ôÀÌ º¯È­)
-    public float jumpCutOff = 1; // Á¡ÇÁÅ° ¼Õ ¶¼¸é Áß·Â °öÇÏ±â
-    public float speedLimit = 20; // ÃÖ´ë ³«ÇÏ ¼Óµµ Á¦ÇÑ
-    public float coyoteTime = 0.15f; // ÄÚ¿äÅ× Å¸ÀÓ
-    public float jumpBuffer = 0.15f; // Á¡ÇÁ ¹öÆÛ
+    public float jumpHeight = 7.3f; // ìµœê³  ì í”„ ë†’ì´
+    public float timeToJumpApex = 2f; // ìµœê³  ë†’ì´ê¹Œì§€ ê±¸ë¦¬ëŠ” ì‹œê°„
+    public float upwardMovementMultiplier = 2f; // ìƒìŠ¹ ì¤‘ë ¥ ê³±í•˜ê¸°
+    public float downwardMovementMultiplier = 2f; // í•˜ê°• ì¤‘ë ¥ ê³±í•˜ê¸°
+    public float runJumpMultiplier = 1f; // ë‹¬ë¦´ ë•Œ ì í”„ íŒŒì›Œ ë°°ìœ¨
+    public float doubleJumpMultiplier = 0.8f; // ë”ë¸” ì í”„ ì‹œ ì í”„ íŒŒì›Œ ë°°ìœ¨
+    public int maxAirJumps = 1; // ìµœëŒ€ ì¶”ê°€ ì í”„ íšŸìˆ˜
+    public bool variablejumpHeight = false; // ì í”„í‚¤ì— ì† ë–¼ë©´ ë–¨ì–´ì§€ê²Œ í•  ê²ƒì¸ê°€?(ì…ë ¥ ì‹œê°„ì— ë”°ë¥¸ ì í”„ ë†’ì´ ë³€í™”)
+    public float jumpCutOff = 1; // ì í”„í‚¤ ì† ë–¼ë©´ ì¤‘ë ¥ ê³±í•˜ê¸°
+    public float speedLimit = 20; // ìµœëŒ€ ë‚™í•˜ ì†ë„ ì œí•œ
+    public float coyoteTime = 0.15f; // ì½”ìš”í…Œ íƒ€ì„
+    public float jumpBuffer = 0.15f; // ì í”„ ë²„í¼
     //------------------------
     public float jumpSpeed;
     private float defaultGravityScale;
@@ -38,11 +40,11 @@ public class CharacterJump : MonoBehaviour
 
     private void Awake()
     {
-        // ±âº» ÄÄÆ÷³ÍÆ® ºÒ·¯¿À±â
+        // ê¸°ë³¸ ì»´í¬ë„ŒíŠ¸ ë¶ˆëŸ¬ì˜¤ê¸°
         rb = GetComponent<Rigidbody>();
         ground = GetComponent<CharacterGround>();
 
-        // Áß·Â ÃÊ±âÈ­
+        // ì¤‘ë ¥ ì´ˆê¸°í™”
         defaultGravityScale = 1f;
         gravMultiplier = defaultGravityScale;
 
@@ -63,7 +65,7 @@ public class CharacterJump : MonoBehaviour
         CheckJumpBufferCoyoteTime();
         anim.SetBool("isOnGround", !currentlyJumping);
 
-        Debug.Log("gravMultiplier °ª: " + gravMultiplier + ", customGravity °ª: " + customGravity);
+        Debug.Log("gravMultiplier ê°’: " + gravMultiplier + ", customGravity ê°’: " + customGravity);
     }
 
     private void FixedUpdate()
@@ -71,13 +73,13 @@ public class CharacterJump : MonoBehaviour
         // Get velocity from Kit's Rigidbody 
         velocity = rb.linearVelocity;
 
-        // desiredJump°¡ trueÀÎ µ¿¾È DoAJump ½ÇÇà
+        // desiredJumpê°€ trueì¸ ë™ì•ˆ DoAJump ì‹¤í–‰
         if (desiredJump)
         {
             DoAJump();
             rb.linearVelocity = velocity;
 
-            // ÀÌ ÇÁ·¹ÀÓ¿¡¼­´Â Áß·Â °è»ê ½ºÅµ. ÄÚ¿äÅ× Å¸ÀÓÀÌ µÎ¹ø µÇÁö ¾Êµµ·Ï ÇÔ
+            // ì´ í”„ë ˆì„ì—ì„œëŠ” ì¤‘ë ¥ ê³„ì‚° ìŠ¤í‚µ. ì½”ìš”í…Œ íƒ€ì„ì´ ë‘ë²ˆ ë˜ì§€ ì•Šë„ë¡ í•¨
             return;
         }
 
@@ -87,62 +89,62 @@ public class CharacterJump : MonoBehaviour
 
     private void calculateGravity()
     {
-        // Y ¹æÇâ¿¡ µû¶ó Ä³¸¯ÅÍÀÇ Áß·Â ¹Ù²Ù±â
+        // Y ë°©í–¥ì— ë”°ë¼ ìºë¦­í„°ì˜ ì¤‘ë ¥ ë°”ê¾¸ê¸°
 
-        // Ä³¸¯ÅÍ°¡ »ó½Â ÁßÀÌ¸é
+        // ìºë¦­í„°ê°€ ìƒìŠ¹ ì¤‘ì´ë©´
         if (rb.linearVelocity.y > 0.01f)
         {
             if (onGround)
             {
-                // Ä³¸¯ÅÍ°¡ ¿òÁ÷ÀÌ´Â ÇÃ·§Æû µî (¶¥¿¡) ÀÖÀ¸¸é Áß·Â ¾È ¹Ù²Ù±â 
+                // ìºë¦­í„°ê°€ ì›€ì§ì´ëŠ” í”Œë«í¼ ë“± (ë•…ì—) ìˆìœ¼ë©´ ì¤‘ë ¥ ì•ˆ ë°”ê¾¸ê¸° 
                 gravMultiplier = defaultGravityScale;
-                Debug.Log("¶¥¿¡ ÀÖÀ½: " + gravMultiplier);
+                Debug.Log("ë•…ì— ìˆìŒ: " + gravMultiplier);
             }
             else
             {
-                // variable jump heightÀ» »ç¿ëÇÑ´Ù¸é
+                // variable jump heightì„ ì‚¬ìš©í•œë‹¤ë©´
                 if (variablejumpHeight)
                 {
-                    // ÇÃ·¹ÀÌ¾î°¡ »ó½Â ÁßÀÌ°í, Á¡ÇÁÅ° ´©¸£¸é Áß·Â °öÇÏ±â
+                    // í”Œë ˆì´ì–´ê°€ ìƒìŠ¹ ì¤‘ì´ê³ , ì í”„í‚¤ ëˆ„ë¥´ë©´ ì¤‘ë ¥ ê³±í•˜ê¸°
                     if (pressingJump && currentlyJumping)
                     {
                         gravMultiplier = upwardMovementMultiplier;
-                        Debug.Log("»ó½Â Áß, Á¡ÇÁ Å° ´©¸§: " + gravMultiplier);
+                        Debug.Log("ìƒìŠ¹ ì¤‘, ì í”„ í‚¤ ëˆ„ë¦„: " + gravMultiplier);
                     }
-                    // ÇÃ·¹ÀÌ¾î°¡ Á¡ÇÁÅ° ¶¼¸é ÇÏ°­ÇÏ±â
+                    // í”Œë ˆì´ì–´ê°€ ì í”„í‚¤ ë–¼ë©´ í•˜ê°•í•˜ê¸°
                     else
                     {
                         gravMultiplier = jumpCutOff;
-                        Debug.Log("»ó½Â Áß, Á¡ÇÁ Å° ¶À: " + gravMultiplier);
+                        Debug.Log("ìƒìŠ¹ ì¤‘, ì í”„ í‚¤ ë—Œ: " + gravMultiplier);
                     }
                 }
                 else
                 {
                     gravMultiplier = upwardMovementMultiplier;
-                    Debug.Log("»ó½Â Áß, ±âº» ¼³Á¤: " + gravMultiplier);
+                    Debug.Log("ìƒìŠ¹ ì¤‘, ê¸°ë³¸ ì„¤ì •: " + gravMultiplier);
                 }
             }
         }
 
-        // Ä³¸¯ÅÍ°¡ ÇÏ°­ ÁßÀÌ¸é
+        // ìºë¦­í„°ê°€ í•˜ê°• ì¤‘ì´ë©´
         else if (rb.linearVelocity.y < -0.01f)
         {
 
             if (onGround)
-            // Ä³¸¯ÅÍ°¡ ¿òÁ÷ÀÌ´Â ÇÃ·§Æû µî (¶¥¿¡) ÀÖÀ¸¸é Áß·Â ¾È ¹Ù²Ù±â 
+            // ìºë¦­í„°ê°€ ì›€ì§ì´ëŠ” í”Œë«í¼ ë“± (ë•…ì—) ìˆìœ¼ë©´ ì¤‘ë ¥ ì•ˆ ë°”ê¾¸ê¸° 
             {
                 gravMultiplier = defaultGravityScale;
-                Debug.Log("ÇÏ°­ Áß, ¶¥¿¡ ÀÖÀ½: " + gravMultiplier);
+                Debug.Log("í•˜ê°• ì¤‘, ë•…ì— ìˆìŒ: " + gravMultiplier);
             }
             else
             {
-                // ±×·¸Áö ¾Ê´Ù¸é, Áß·Â °öÇÏ±â
+                // ê·¸ë ‡ì§€ ì•Šë‹¤ë©´, ì¤‘ë ¥ ê³±í•˜ê¸°
                 gravMultiplier = downwardMovementMultiplier;
-                Debug.Log("ÇÏ°­ Áß, °øÁß¿¡ ÀÖÀ½: " + gravMultiplier);
+                Debug.Log("í•˜ê°• ì¤‘, ê³µì¤‘ì— ìˆìŒ: " + gravMultiplier);
             }
 
         }
-        // ÀüÇô ¿òÁ÷ÀÌÁö ¾Ê´Â´Ù¸é, currentlyJumpingÀ» ¾ÈÇÏ°Ô
+        // ì „í˜€ ì›€ì§ì´ì§€ ì•ŠëŠ”ë‹¤ë©´, currentlyJumpingì„ ì•ˆí•˜ê²Œ
         else
         {
             if (onGround)
@@ -151,33 +153,33 @@ public class CharacterJump : MonoBehaviour
             }
 
             gravMultiplier = defaultGravityScale;
-            Debug.Log("Á¤Áö »óÅÂ: " + gravMultiplier);
+            Debug.Log("ì •ì§€ ìƒíƒœ: " + gravMultiplier);
         }
 
-        // Ä³¸¯ÅÍ ¼Óµµ Á¶Àı
-        // speed limitÀÌ ÀÖÀ¸¸é yÃà ÇÏ°­ ¼Óµµ Á¦ÇÑ
+        // ìºë¦­í„° ì†ë„ ì¡°ì ˆ
+        // speed limitì´ ìˆìœ¼ë©´ yì¶• í•˜ê°• ì†ë„ ì œí•œ
         rb.linearVelocity = new Vector3(velocity.x, Mathf.Clamp(velocity.y, -speedLimit, 100), velocity.z);
     }
 
 
     private void setPhysics()
     {
-        // »õ·Î¿î Áß·Â °è»ê
+        // ìƒˆë¡œìš´ ì¤‘ë ¥ ê³„ì‚°
         Vector2 newGravity = new Vector2(0, (-2 * jumpHeight) / (timeToJumpApex * timeToJumpApex));
 
-        // Ä¿½ºÅÒ Áß·Â ¼³Á¤
+        // ì»¤ìŠ¤í…€ ì¤‘ë ¥ ì„¤ì •
         customGravity = new Vector3(0, newGravity.y, 0) * gravMultiplier;
 
-        Debug.Log("Àû¿ëµÈ customGravity: " + customGravity);
+        Debug.Log("ì ìš©ëœ customGravity: " + customGravity);
 
-        // ¸Å ÇÁ·¹ÀÓ¸¶´Ù Ä¿½ºÅÒ Áß·Â Àû¿ë
+        // ë§¤ í”„ë ˆì„ë§ˆë‹¤ ì»¤ìŠ¤í…€ ì¤‘ë ¥ ì ìš©
         rb.AddForce(customGravity, ForceMode.Acceleration);
     }
 
 
     private void CheckJumpButton()
     {
-        // Á¡ÇÁ ¹öÆ° ÀÔ·Â È®ÀÎ
+        // ì í”„ ë²„íŠ¼ ì…ë ¥ í™•ì¸
         if (Input.GetButtonDown("Jump"))
         {
             desiredJump = true;
@@ -193,38 +195,41 @@ public class CharacterJump : MonoBehaviour
 
     private void DoAJump()
     {
-        // ¶¥¿¡ ÀÖ°Å³ª, ÄÚ¿äÅ× Å¸ÀÓ ÁßÀÌ°Å³ª, ´õºí Á¡ÇÁ°¡ °¡´ÉÇÏ´Ù¸é
+        // ë•…ì— ìˆê±°ë‚˜, ì½”ìš”í…Œ íƒ€ì„ ì¤‘ì´ê±°ë‚˜, ë”ë¸” ì í”„ê°€ ê°€ëŠ¥í•˜ë‹¤ë©´
         if (onGround || (coyoteTimeCounter > 0.03f && coyoteTimeCounter < coyoteTime) || canJumpAgain)
         {
             desiredJump = false;
             jumpBufferCounter = 0;
             coyoteTimeCounter = 0;
 
-            // ´õºí Á¡ÇÁ Çã¿ë ½Ã ÇÑ¹ø ´õ Á¡ÇÁÇÏµµ·Ï ÇÔ
+            // ë”ë¸” ì í”„ í—ˆìš© ì‹œ í•œë²ˆ ë” ì í”„í•˜ë„ë¡ í•¨
+            bool isDoubleJump = !onGround && canJumpAgain;
             canJumpAgain = (maxAirJumps == 1 && canJumpAgain == false);
 
-            // °ªµéÀ» ¹ÙÅÁÀ¸·Î Á¡ÇÁ ÆÄ¿ö Á¤ÇÏ±â
+            // ê°’ë“¤ì„ ë°”íƒ•ìœ¼ë¡œ ì í”„ íŒŒì›Œ ì •í•˜ê¸°
             jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * Vector3.Magnitude(customGravity) * jumpHeight);
 
-            // Á¡ÇÁ Áß¿¡ Ä³¸¯ÅÍ°¡ À§ È¤Àº ¾Æ·¡·Î ÀÌµ¿ÇÑ´Ù¸é(´õºí Á¡ÇÁ µî), Á¡ÇÁ ½ºÇÇµå º¯°æ
-            // ÇöÀç ¼Óµµ¿¡ °ü°è¾øÀÌ Á¡ÇÁ ÈûÀÌ ÀÏÁ¤ÇÏµµ·Ï ÇÔ
-            if (velocity.y > 0f)
+            // ì í”„ ì¤‘ì— ìºë¦­í„°ê°€ ìœ„ í˜¹ì€ ì•„ë˜ë¡œ ì´ë™í•œë‹¤ë©´(ë”ë¸” ì í”„ ë“±), ì í”„ ìŠ¤í”¼ë“œ ë³€ê²½
+            // í˜„ì¬ ì†ë„ì— ê´€ê³„ì—†ì´ ì í”„ í˜ì´ ì¼ì •í•˜ë„ë¡ í•¨
+            float horizontalSpeed = new Vector2(velocity.x, velocity.z).magnitude;
+            if (horizontalSpeed > 0.1f)
             {
-                jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
-            }
-            else if (velocity.y < 0f)
-            {
-                jumpSpeed += Mathf.Abs(rb.linearVelocity.y);
+                jumpSpeed *= runJumpMultiplier;
             }
 
-            // »õ·Î¿î Á¡ÇÁ ½ºÇÇµå¸¦ ´õÇÏ±â
-            velocity.y += jumpSpeed;
+            if (isDoubleJump)
+            {
+                jumpSpeed *= doubleJumpMultiplier;
+            }
+
+            // ê¸°ì¡´ ì†ë„ë¥¼ ë¬´ì‹œí•˜ê³  ìƒˆë¡œìš´ ì í”„ ìŠ¤í”¼ë“œë¥¼ ë”í•˜ê¸°
+            velocity.y = jumpSpeed;
             currentlyJumping = true;
         }
 
         if (jumpBuffer == 0)
         {
-            // Á¡ÇÁ ¹öÆÛ°¡ ¾øÀ¸¸é, Á¡ÇÁÅ° ´©¸£ÀÚ¸¶ÀÚ desiredJump ²ô±â
+            // ì í”„ ë²„í¼ê°€ ì—†ìœ¼ë©´, ì í”„í‚¤ ëˆ„ë¥´ìë§ˆì desiredJump ë„ê¸°
             desiredJump = false;
         }
     }
@@ -235,31 +240,31 @@ public class CharacterJump : MonoBehaviour
         // Check if we're on ground, using Kit's Ground script
         onGround = ground.GetOnGround();
 
-        // Á¡ÇÁ ¹öÆÛ°¡ 0º¸´Ù Å©¸é ¿¹ºñ ÀÔ·ÂÀÌ µÇµµ·Ï
+        // ì í”„ ë²„í¼ê°€ 0ë³´ë‹¤ í¬ë©´ ì˜ˆë¹„ ì…ë ¥ì´ ë˜ë„ë¡
         if (jumpBuffer > 0)
         {
-            // disireJump¸¦ ²ô±â Àü Ä«¿îÆ®, Ä«¿îÆ® ³¡³ª¸é DoAJump ÇÔ¼ö ½ÇÇà
+            // disireJumpë¥¼ ë„ê¸° ì „ ì¹´ìš´íŠ¸, ì¹´ìš´íŠ¸ ëë‚˜ë©´ DoAJump í•¨ìˆ˜ ì‹¤í–‰
             if (desiredJump)
             {
                 jumpBufferCounter += Time.deltaTime;
 
                 if (jumpBufferCounter > jumpBuffer)
                 {
-                    // Ä«¿îÆ®°¡ Á¡ÇÁ ¹öÆÛº¸´Ù Å©¸é disireJump¸¦ ²ö´Ù.
+                    // ì¹´ìš´íŠ¸ê°€ ì í”„ ë²„í¼ë³´ë‹¤ í¬ë©´ disireJumpë¥¼ ëˆë‹¤.
                     desiredJump = false;
                     jumpBufferCounter = 0;
                 }
             }
         }
 
-        // Á¡ÇÁ ÁßÀÌ ¾Æ´Ñµ¥, ¶¥¿¡¼­ ¶³¾îÁø °æ¿ì, ÄÚ¿äÅ× Å¸ÀÓ ÃøÁ¤
+        // ì í”„ ì¤‘ì´ ì•„ë‹Œë°, ë•…ì—ì„œ ë–¨ì–´ì§„ ê²½ìš°, ì½”ìš”í…Œ íƒ€ì„ ì¸¡ì •
         if (!currentlyJumping && !onGround)
         {
             coyoteTimeCounter += Time.deltaTime;
         }
         else
         {
-            // ¶¥¿¡ ´ê°Å³ª Á¡ÇÁÇÏ¸é ÄÚ¿äÅ× Å¸ÀÓ ÃÊ±âÈ­
+            // ë•…ì— ë‹¿ê±°ë‚˜ ì í”„í•˜ë©´ ì½”ìš”í…Œ íƒ€ì„ ì´ˆê¸°í™”
             coyoteTimeCounter = 0;
         }
     }
