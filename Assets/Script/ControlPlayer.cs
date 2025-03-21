@@ -85,7 +85,7 @@ public class ControlPlayer : MonoBehaviour
     {
         isRail = true;
 
-        rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
+        //rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
     }
 
     private void MoveRail()
@@ -122,6 +122,12 @@ public class ControlPlayer : MonoBehaviour
 
     private void Jump()
     {
+        // 점프 직후 지상판정이 나지 않도록 보정
+        if (rb.linearVelocity.y < 9f)
+        {
+            isGround = Physics.Raycast(transform.position, Vector3.down, 0.51f);
+        }
+
         if (jump && isGround)
         {
             isGround = false;
@@ -131,12 +137,6 @@ public class ControlPlayer : MonoBehaviour
         else if (!isGround)
         {
             Vector3 nowVelocity = rb.linearVelocity;
-
-            // 점프 직후 지상판정이 나지 않도록 보정
-            if (nowVelocity.y < 9f)
-            {
-                isGround = Physics.Raycast(transform.position, Vector3.down, 0.51f);
-            }
 
             if (nowVelocity.y < -40f)
             {
