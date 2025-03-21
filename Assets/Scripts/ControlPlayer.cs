@@ -91,6 +91,8 @@ public class ControlPlayer : MonoBehaviour
     {
         isRail = true;
 
+        rb.rotation = Quaternion.identity;
+
         rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
     }
 
@@ -168,11 +170,9 @@ public class ControlPlayer : MonoBehaviour
 
     public IEnumerator SetIsRail(bool newState)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         isRail = newState;
-
-        Debug.Log("hi");
 
         yield break;
     }
