@@ -19,11 +19,11 @@ public class DisappearingFloor : MonoBehaviour
     {
         while (true)
         {
-            _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, _rend.material.color.a-0.01f);
+            _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, _rend.material.color.a-0.001f);
             Debug.Log(_rend.material.color);
             if (_rend.material.color.a < 0.1f) break;
 
-            yield return new WaitForSeconds(_timeUntilDisappear/90f);
+            yield return new WaitForSeconds(_timeUntilDisappear/900f);
         }
 
         _col.enabled = false;
@@ -31,6 +31,7 @@ public class DisappearingFloor : MonoBehaviour
 
         yield return new WaitForSeconds(_timeUntilReappear);
 
+        _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, 1f);
         _col.enabled = true;
         _rend.enabled = true;
         _isDisappearing = false;
