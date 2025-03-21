@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class Trapdoor : MonoBehaviour
@@ -8,30 +9,13 @@ public class Trapdoor : MonoBehaviour
     [SerializeField] float _timeUntilClose;
     [SerializeField] float _openingDuration;
     [SerializeField] float _closingDuration;
+    [SerializeField] int rotateDirection; 
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Player") && !_isOpening){
             StartCoroutine(Open());
         }
     }
-
-    // IEnumerator Open(){
-    //     yield return new WaitForSeconds(1f);
-    //     while(true){
-    //         transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(new Vector3(0,0,90f)), 5);
-    //         if(Quaternion.Angle(transform.rotation, Quaternion.Euler(new Vector3(0,0,90f))) <= 0.1f){
-    //             break;
-    //         }
-    //     }
-    //     yield return new WaitForSeconds(1f);
-    //     while(true){
-    //         transform.rotation = Quaternion.Lerp(Quaternion.Euler(new Vector3(0,0,90f)), Quaternion.identity, 5);
-    //         if(Quaternion.Angle(transform.rotation, Quaternion.identity) <= 0.1f){
-    //             break;
-    //         }
-    //     }
-    //     _isOpening = false;
-    // }
 
     IEnumerator Open()
     {
@@ -44,7 +28,7 @@ public class Trapdoor : MonoBehaviour
         float duration = _openingDuration; // Time in seconds for the door to open
         float elapsedTime = 0f;
         Quaternion startRotation = Quaternion.identity;
-        Quaternion targetRotation = Quaternion.Euler(0, 0, 90f);
+        Quaternion targetRotation = Quaternion.Euler(0, 0, rotateDirection * 90f);
 
         while (elapsedTime < _openingDuration)
         {
@@ -60,7 +44,7 @@ public class Trapdoor : MonoBehaviour
         
         // Closing animation
         elapsedTime = 0f;
-        startRotation = Quaternion.Euler(0, 0, 90f);
+        startRotation = Quaternion.Euler(0, 0, rotateDirection * 90f);
         targetRotation = Quaternion.identity;
 
         while (elapsedTime < _closingDuration)
