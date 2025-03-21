@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Rail : MonoBehaviour
 {
-    [SerializeField] private bool prohibitJump;
+    public bool prohibitJump;
 
     private Vector3 thisRotation;
     private Vector3 enterVector;
     private readonly float rad = Mathf.PI / 180f;
 
-    private void Awake()
+    private void Start()
     {
         thisRotation = transform.rotation.eulerAngles;
         enterVector = new Vector3(1.5f * Mathf.Cos(thisRotation.y * rad), 0, 1.5f * Mathf.Sin(thisRotation.y * rad));
