@@ -207,7 +207,7 @@ MonoBehaviour:
   colliderOffset: {x: 0.5, y: 0, z: 0.5}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
 --- !u!95 &5496260173527074086
 Animator:
   serializedVersion: 7
