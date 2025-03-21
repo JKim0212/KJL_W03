@@ -47,9 +47,9 @@ GameObject:
   - component: {fileID: 7759039584259098361}
   - component: {fileID: 2604013794438937739}
   - component: {fileID: 5890679302015329245}
-  - component: {fileID: 5496260173527074086}
   - component: {fileID: 5334732771045656039}
   - component: {fileID: 3991255688673425582}
+  - component: {fileID: 3752637402181075781}
   m_Layer: 0
   m_Name: TestPlayer_03211622
   m_TagString: Player
@@ -239,29 +239,7 @@ MonoBehaviour:
   colliderOffset: {x: 0.5, y: 0, z: 0.5}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
---- !u!95 &5496260173527074086
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3009430485903299561}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 90b8c800e930fa04aa0ceb956cd89291, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+    m_Bits: 8
 --- !u!114 &5334732771045656039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +474,28 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!95 &3752637402181075781
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3009430485903299561}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 90b8c800e930fa04aa0ceb956cd89291, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3777444165747360426
 GameObject:
   m_ObjectHideFlags: 0
