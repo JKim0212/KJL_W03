@@ -152,6 +152,7 @@ public class CharacterJump : MonoBehaviour
             if (onGround)
             {
                 currentlyJumping = false;
+                canJumpAgain = false;
             }
 
             gravMultiplier = defaultGravityScale;
