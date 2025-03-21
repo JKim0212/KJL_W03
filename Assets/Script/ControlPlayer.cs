@@ -10,10 +10,12 @@ public class ControlPlayer : MonoBehaviour
 
     private Rigidbody rb;
     private Transform mesh;
+    private RaycastHit hit;
+    [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private float moveSpeed;
     private float accelation = 0;
-    private bool isGround = false;
+    [SerializeField] private bool isGround = false;
     private bool isRail = false;
     private bool isWeb = false;
 
@@ -121,11 +123,18 @@ public class ControlPlayer : MonoBehaviour
 
     private void Jump()
     {
-        if (jump && isGround)
+        if (isGround)
         {
-            isGround = false;
-            isRail = false;
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            if (jump)
+            {
+                isGround = false;
+                isRail = false;
+                rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            }
+            else
+            {
+                isGround = Physics.Raycast(transform.position, Vector3.down * 0.6f, out hit, 1f);
+            }
         }
         else if (!isGround)
         {
