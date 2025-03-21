@@ -30,7 +30,9 @@ public class PlayerController : MonoBehaviour
         // 카메라 기준 이동 방향 계산
         Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
         Vector3 moveDirection = _cameraTransform.TransformDirection(inputDirection);
-        moveDirection.y = 0f; // Y축 이동 제거
+
+
+        moveDirection.y = 0f; // Y축 무시
         moveDirection.Normalize();
 
         if (_isGround)

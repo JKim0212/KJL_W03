@@ -12,8 +12,11 @@ public class CharacterMovement : MonoBehaviour
 
 
     [Header("Running")]
-    public float directionX; // Input 값 확인(-1 ~ 1)
-    public float directionZ; // Input 값 확인(-1 ~ 1)
+    //public float directionX; // Input 값 확인(-1 ~ 1)
+    //public float directionZ; // Input 값 확인(-1 ~ 1)
+    //
+
+
     public float maxSpeed = 14f; // 최고 속도
     public float maxAcceleration = 85f; // 가속도(얼마나 빠르게 최고속도 도달)
     public float maxDecceleration = 85; // 감속도(얼마나 빠르게 정지 도달)
@@ -29,7 +32,10 @@ public class CharacterMovement : MonoBehaviour
     private float deceleration;
     private float turnSpeed;
 
-    
+    private Vector3 _moveInput;
+
+
+
 
 
     private void Awake()
@@ -51,6 +57,9 @@ public class CharacterMovement : MonoBehaviour
     }
 
 
+
+
+
     private void Move()
     {
         // isGrounded 따라 적용되는 값 변경(acc, dec, turn)
@@ -59,38 +68,47 @@ public class CharacterMovement : MonoBehaviour
         turnSpeed = onGround ? maxTurnSpeed : maxAirTurnSpeed;
 
         // 좌우, 전후 Input 값 받기(-1 ~ 1 사이)
-        directionX = Input.GetAxis("Horizontal");
-        directionZ = Input.GetAxis("Vertical");
+        //directionX = Input.GetAxis("Horizontal");
+        //directionZ = Input.GetAxis("Vertical");
 
         // 카메라의 방향을 기준으로 이동
         Vector3 forward = Camera.main.transform.TransformDirection(Vector3.forward);
         Vector3 right = Camera.main.transform.TransformDirection(Vector3.right);
 
+        Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;    //YR
+        Vector3 moveDirection = Camera.main.transform.TransformDirection(inputDirection);   //YR
+
+
+
         forward.y = 0; // Y축 방향은 무시
         right.y = 0; // Y축 방향은 무시
+        moveDirection.y = 0f;   //YR
 
         forward.Normalize();
         right.Normalize();
+        //moveDirection.Normalize();  //YR
 
         // 원하는 속도 계산
-        desiredVelocity = (forward * directionZ + right * directionX) * maxSpeed;
+        desiredVelocity = (forward * _moveInput.y + right * _moveInput.x) * maxSpeed;
 
         // Y축 속도 추가
         desiredVelocity.y = rb.linearVelocity.y; // 현재 Y축 속도를 유지
 
         // X축 움직임
-        if (directionX != 0 || directionZ != 0)
+        if (_moveInput.x != 0 || _moveInput.y != 0)
         {
+            maxSpeedChange = acceleration * Time.deltaTime;
+
             // 현재 방향과 입력 방향이 다른 경우, 터닝으로 인식
-            if (Mathf.Sign(directionX) != Mathf.Sign(velocity.x) || Mathf.Sign(directionZ) != Mathf.Sign(velocity.z))
-            {
-                maxSpeedChange = turnSpeed * Time.deltaTime;
-            }
-            else
-            {
-                // 현재 방향과 입력 방향이 같은 경우, 가속 시작
-                maxSpeedChange = acceleration * Time.deltaTime;
-            }
+            //if (Mathf.Sign(_moveInput.x) != Mathf.Sign(velocity.x) || Mathf.Sign(_moveInput.y) != Mathf.Sign(velocity.z))
+            //{
+            //    maxSpeedChange = turnSpeed * Time.deltaTime;
+            //}
+            //else
+            //{
+            //    // 현재 방향과 입력 방향이 같은 경우, 가속 시작
+                
+            //}
         }
         else
         {
@@ -126,5 +144,14 @@ public class CharacterMovement : MonoBehaviour
 
         Debug.Log("x축 속도: " + velocity.x + ", z축 속도: " + velocity.z);
     }
+
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        _moveInput = context.ReadValue<Vector2>();
+    }
+
+
+
 
 }
