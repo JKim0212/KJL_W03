@@ -21,16 +21,16 @@ public class Rail : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        collision.transform.position = new(transform.position.x, transform.position.y + 1f, collision.transform.position.z);
+        collision.transform.position = GetPosition(collision.transform.position);
         collision.transform.rotation = transform.rotation;
 
         if (collision.gameObject.CompareTag("Character"))
         {
             collision.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
-    }*/
+    }
 
     private void OnCollisionStay(Collision collision)
     {

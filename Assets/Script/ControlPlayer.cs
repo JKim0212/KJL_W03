@@ -10,12 +10,10 @@ public class ControlPlayer : MonoBehaviour
 
     private Rigidbody rb;
     private Transform mesh;
-    private RaycastHit hit;
-    [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private float moveSpeed;
     private float accelation = 0;
-    [SerializeField] private bool isGround = false;
+    private bool isGround = false;
     private bool isRail = false;
     private bool isWeb = false;
 
@@ -123,22 +121,21 @@ public class ControlPlayer : MonoBehaviour
 
     private void Jump()
     {
-        if (isGround)
+        if (jump && isGround)
         {
-            if (jump)
-            {
-                isGround = false;
-                isRail = false;
-                rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
-            }
-            else
-            {
-                isGround = Physics.Raycast(transform.position, Vector3.down * 0.6f, out hit, 1f);
-            }
+            isGround = false;
+            isRail = false;
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
         }
         else if (!isGround)
         {
             Vector3 nowVelocity = rb.linearVelocity;
+
+            // 점프 직후 지상판정이 나지 않도록 보정
+            if (nowVelocity.y < 9f)
+            {
+                isGround = Physics.Raycast(transform.position, Vector3.down, 0.51f);
+            }
 
             if (nowVelocity.y < -40f)
             {
@@ -151,11 +148,9 @@ public class ControlPlayer : MonoBehaviour
             }
             else if (nowVelocity.y < 7f)
             {
-                nowVelocity.y = -0.2f;
+                nowVelocity.y = -0.1f;
                 rb.linearVelocity = nowVelocity;
             }
-
-            Debug.Log(rb.linearVelocity.y);
         }
     }
 
@@ -167,12 +162,5 @@ public class ControlPlayer : MonoBehaviour
     public void SetIsWeb(bool newState)
     {
         isWeb = newState;
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Ground") && !isGround){
-            isGround = true;
-        }
     }
 }
