@@ -55,7 +55,7 @@ public class CharacterJump : MonoBehaviour
 
     private void Update()
     {
-        setPhysics();
+        
 
         // Check if we're on ground, using Kit's Ground script
         onGround = ground.GetOnGround();
@@ -70,6 +70,8 @@ public class CharacterJump : MonoBehaviour
 
     private void FixedUpdate()
     {
+        setPhysics();
+
         // Get velocity from Kit's Rigidbody 
         velocity = rb.linearVelocity;
 

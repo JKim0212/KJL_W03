@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     Vector3 _initialJumpVelocity;
 
     [SerializeField]
-    Transform _cameraTransform; // 카메라 Transform (Inspector에서 할당)
+    Transform _cameraTransform; // 카메라 Transform
 
     void Start()
     {

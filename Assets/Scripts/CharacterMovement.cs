@@ -14,7 +14,7 @@ public class CharacterMovement : MonoBehaviour
     [Header("Running")]
     //public float directionX; // Input 값 확인(-1 ~ 1)
     //public float directionZ; // Input 값 확인(-1 ~ 1)
-    //
+
 
 
     public float maxSpeed = 14f; // 최고 속도
@@ -75,30 +75,29 @@ public class CharacterMovement : MonoBehaviour
         Vector3 forward = Camera.main.transform.TransformDirection(Vector3.forward);
         Vector3 right = Camera.main.transform.TransformDirection(Vector3.right);
 
-        Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;    //YR
-        Vector3 moveDirection = Camera.main.transform.TransformDirection(inputDirection);   //YR
-
-
 
         forward.y = 0; // Y축 방향은 무시
         right.y = 0; // Y축 방향은 무시
-        moveDirection.y = 0f;   //YR
+
 
         forward.Normalize();
         right.Normalize();
-        //moveDirection.Normalize();  //YR
 
         // 원하는 속도 계산
-        desiredVelocity = (forward * _moveInput.y + right * _moveInput.x) * maxSpeed;
+        desiredVelocity = (forward * _moveInput.y + right * _moveInput.x) * maxSpeed ;
 
         // Y축 속도 추가
         desiredVelocity.y = rb.linearVelocity.y; // 현재 Y축 속도를 유지
+        maxSpeedChange = acceleration * Time.deltaTime;
+
 
         // X축 움직임
-        if (_moveInput.x != 0 || _moveInput.y != 0)
+        if (_moveInput.x == 0 || _moveInput.y == 0)  //!=에서 ==으로 수정
         {
-            maxSpeedChange = acceleration * Time.deltaTime;
+            maxSpeedChange = deceleration * Time.deltaTime;
 
+
+            
             // 현재 방향과 입력 방향이 다른 경우, 터닝으로 인식
             //if (Mathf.Sign(_moveInput.x) != Mathf.Sign(velocity.x) || Mathf.Sign(_moveInput.y) != Mathf.Sign(velocity.z))
             //{
@@ -107,15 +106,15 @@ public class CharacterMovement : MonoBehaviour
             //else
             //{
             //    // 현재 방향과 입력 방향이 같은 경우, 가속 시작
-                
+
             //}
         }
-        else
-        {
-            // 입력이 전혀 없으면, 감속
-            maxSpeedChange = deceleration * Time.deltaTime;
+        //else
+        //{
+        //    // 입력이 전혀 없으면, 감속
             
-        }
+            
+        //}
 
         // maxSpeedChange 만큼 X축, Z축 속도 계산
         velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
@@ -125,11 +124,14 @@ public class CharacterMovement : MonoBehaviour
         velocity.y = rb.linearVelocity.y; // Y축 속도 유지
         rb.linearVelocity = velocity;
 
+
+
         // 플레이어 회전
         if (velocity.x != 0 || velocity.z != 0) // 이동하는 경우에만 회전
         {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, turnSpeed * Time.deltaTime);
+
         }
 
         /*
