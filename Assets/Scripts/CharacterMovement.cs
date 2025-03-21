@@ -148,7 +148,7 @@ public class CharacterMovement : MonoBehaviour
         */
 
 
-        Debug.Log("x축 속도: " + velocity.x + ", z축 속도: " + velocity.z);
+        //Debug.Log("x축 속도: " + velocity.x + ", z축 속도: " + velocity.z);
     }
 
 

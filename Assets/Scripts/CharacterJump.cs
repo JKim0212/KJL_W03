@@ -65,7 +65,7 @@ public class CharacterJump : MonoBehaviour
         CheckJumpBufferCoyoteTime();
         anim.SetBool("isOnGround", !currentlyJumping);
 
-        Debug.Log("gravMultiplier 값: " + gravMultiplier + ", customGravity 값: " + customGravity);
+        //Debug.Log("gravMultiplier 값: " + gravMultiplier + ", customGravity 값: " + customGravity);
     }
 
     private void FixedUpdate()
@@ -100,7 +100,7 @@ public class CharacterJump : MonoBehaviour
             {
                 // 캐릭터가 움직이는 플랫폼 등 (땅에) 있으면 중력 안 바꾸기 
                 gravMultiplier = defaultGravityScale;
-                Debug.Log("땅에 있음: " + gravMultiplier);
+                //Debug.Log("땅에 있음: " + gravMultiplier);
             }
             else
             {
@@ -111,19 +111,19 @@ public class CharacterJump : MonoBehaviour
                     if (pressingJump && currentlyJumping)
                     {
                         gravMultiplier = upwardMovementMultiplier;
-                        Debug.Log("상승 중, 점프 키 누름: " + gravMultiplier);
+                        //Debug.Log("상승 중, 점프 키 누름: " + gravMultiplier);
                     }
                     // 플레이어가 점프키 떼면 하강하기
                     else
                     {
                         gravMultiplier = jumpCutOff;
-                        Debug.Log("상승 중, 점프 키 뗌: " + gravMultiplier);
+                        //Debug.Log("상승 중, 점프 키 뗌: " + gravMultiplier);
                     }
                 }
                 else
                 {
                     gravMultiplier = upwardMovementMultiplier;
-                    Debug.Log("상승 중, 기본 설정: " + gravMultiplier);
+                    //Debug.Log("상승 중, 기본 설정: " + gravMultiplier);
                 }
             }
         }
@@ -136,13 +136,13 @@ public class CharacterJump : MonoBehaviour
             // 캐릭터가 움직이는 플랫폼 등 (땅에) 있으면 중력 안 바꾸기 
             {
                 gravMultiplier = defaultGravityScale;
-                Debug.Log("하강 중, 땅에 있음: " + gravMultiplier);
+                //Debug.Log("하강 중, 땅에 있음: " + gravMultiplier);
             }
             else
             {
                 // 그렇지 않다면, 중력 곱하기
                 gravMultiplier = downwardMovementMultiplier;
-                Debug.Log("하강 중, 공중에 있음: " + gravMultiplier);
+                //Debug.Log("하강 중, 공중에 있음: " + gravMultiplier);
             }
 
         }
@@ -156,7 +156,7 @@ public class CharacterJump : MonoBehaviour
             }
 
             gravMultiplier = defaultGravityScale;
-            Debug.Log("정지 상태: " + gravMultiplier);
+            //Debug.Log("정지 상태: " + gravMultiplier);
         }
 
         // 캐릭터 속도 조절
@@ -173,7 +173,7 @@ public class CharacterJump : MonoBehaviour
         // 커스텀 중력 설정
         customGravity = new Vector3(0, newGravity.y, 0) * gravMultiplier;
 
-        Debug.Log("적용된 customGravity: " + customGravity);
+        //Debug.Log("적용된 customGravity: " + customGravity);
 
         // 매 프레임마다 커스텀 중력 적용
         rb.AddForce(customGravity, ForceMode.Acceleration);
