@@ -84,31 +84,35 @@ public class CharacterMovement : MonoBehaviour
         right.Normalize();
 
         // 원하는 속도 계산
-        desiredVelocity = (forward * _moveInput.y + right * _moveInput.x) * maxSpeed ;
+        desiredVelocity = (forward * _moveInput.y + right * _moveInput.x).normalized * maxSpeed ;
 
         // Y축 속도 추가
         desiredVelocity.y = rb.linearVelocity.y; // 현재 Y축 속도를 유지
         maxSpeedChange = acceleration * Time.deltaTime;
 
 
+        // 원인은 모르겠으나... 항상 deceleration을 해야 빠릿빠릿하게 움직임(미끄러짐 제거)
+        maxSpeedChange = deceleration * Time.deltaTime;
+
+
         // X축 움직임
-        if (_moveInput.x == 0 || _moveInput.y == 0)  //!=에서 ==으로 수정
-        {
-            maxSpeedChange = deceleration * Time.deltaTime;
+        //if (_moveInput.x == 0 || _moveInput.y == 0)  //!=에서 ==으로 수정
+        //{
+        //    maxSpeedChange = deceleration * Time.deltaTime;
 
 
             
-            // 현재 방향과 입력 방향이 다른 경우, 터닝으로 인식
-            //if (Mathf.Sign(_moveInput.x) != Mathf.Sign(velocity.x) || Mathf.Sign(_moveInput.y) != Mathf.Sign(velocity.z))
-            //{
-            //    maxSpeedChange = turnSpeed * Time.deltaTime;
-            //}
-            //else
-            //{
-            //    // 현재 방향과 입력 방향이 같은 경우, 가속 시작
+        //    // 현재 방향과 입력 방향이 다른 경우, 터닝으로 인식
+        //    //if (Mathf.Sign(_moveInput.x) != Mathf.Sign(velocity.x) || Mathf.Sign(_moveInput.y) != Mathf.Sign(velocity.z))
+        //    //{
+        //    //    maxSpeedChange = turnSpeed * Time.deltaTime;
+        //    //}
+        //    //else
+        //    //{
+        //    //    // 현재 방향과 입력 방향이 같은 경우, 가속 시작
 
-            //}
-        }
+        //    //}
+        //}
         //else
         //{
         //    // 입력이 전혀 없으면, 감속
