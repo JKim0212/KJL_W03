@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Rail : MonoBehaviour
 {
+    [SerializeField] private bool prohibitJump;
+
     private Vector3 thisRotation;
     private Vector3 enterVector;
     private readonly float rad = Mathf.PI / 180f;
@@ -17,7 +19,7 @@ public class Rail : MonoBehaviour
         if (collider.gameObject.CompareTag("Character"))
         {
             collider.transform.position = GetPosition(collider.transform.position + enterVector);
-            collider.transform.rotation = transform.rotation;
+
             collider.transform.GetComponent<ControlPlayer>().nowRail = gameObject;
             collider.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
@@ -28,7 +30,6 @@ public class Rail : MonoBehaviour
         if (collision.gameObject.CompareTag("Character"))
         {
             collision.transform.position = GetPosition(collision.transform.position);
-            collision.transform.rotation = transform.rotation;
             
             collision.transform.GetComponent<ControlPlayer>().nowRail = gameObject;
             collision.transform.GetComponent<ControlPlayer>().MoveRail_();
@@ -40,7 +41,6 @@ public class Rail : MonoBehaviour
         if (collision.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = GetPosition(collision.transform.position);
-            collision.transform.rotation = transform.rotation;
         }
     }
 
@@ -48,7 +48,7 @@ public class Rail : MonoBehaviour
     {
         if (collider.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collider.gameObject.CompareTag("Character"))
         {
-            collider.transform.GetComponent<ControlPlayer>().SetIsRail(false);
+            StartCoroutine(collider.transform.GetComponent<ControlPlayer>().SetIsRail(false));
             collider.transform.GetComponent<ControlPlayer>().nowRail = null;
         }
     }
@@ -57,10 +57,15 @@ public class Rail : MonoBehaviour
     {
         float dist = targetPosition.z - transform.position.z;
         Vector3 newPosition = transform.position;
-        newPosition.x += dist * Mathf.Tan(thisRotation.y * rad);
-        newPosition.y += -dist / Mathf.Cos(thisRotation.y * rad) * Mathf.Tan(thisRotation.x * rad) + 1;
+        newPosition.x += dist * Mathf.Tan(thisRotation.y * rad) - Mathf.Sin(thisRotation.z * rad);
+        newPosition.y += -dist / Mathf.Cos(thisRotation.y * rad) * Mathf.Tan(thisRotation.x * rad) + Mathf.Cos(thisRotation.z * rad);
         newPosition.z = targetPosition.z;
 
         return newPosition;
+    }
+
+    public bool getProhibitJump()
+    {
+        return prohibitJump;
     }
 }
