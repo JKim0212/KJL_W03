@@ -42,7 +42,7 @@ public class ControlPlayer : MonoBehaviour
     {
         if (isRail) MoveRail();
         else Move();
-        Jump();
+        if (nowRail == null || (nowRail != null && !nowRail.GetComponent<Rail>().getProhibitJump())) Jump();
     }
 
     private void Move()
@@ -72,10 +72,16 @@ public class ControlPlayer : MonoBehaviour
 
         // 위는 전진, 아래는 좌우이동
 
-        if (input.x != 0) rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f);
-        else rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
+        if (input.x != 0)
+        {
+            rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f);
+        }
+        else
+        {
+            rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
+        }
 
-        // 좌우 각도가 너무 틀어지지 않도록 보정
+        // 좌우 각도 보정
         Vector3 nowRotation = rb.rotation.eulerAngles;
         if (nowRotation.y < 180f && nowRotation.y > 45f) nowRotation.y = 45f;
         else if (nowRotation.y > 180f && nowRotation.y < 315f) nowRotation.y = -45f;
@@ -85,7 +91,9 @@ public class ControlPlayer : MonoBehaviour
     {
         isRail = true;
 
-        //rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
+        rb.rotation = Quaternion.identity;
+
+        rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
     }
 
     private void MoveRail()
@@ -160,9 +168,13 @@ public class ControlPlayer : MonoBehaviour
         return isRail;
     }
 
-    public void SetIsRail(bool newState)
+    public IEnumerator SetIsRail(bool newState)
     {
+        yield return new WaitForSeconds(0.1f);
+
         isRail = newState;
+
+        yield break;
     }
 
     public void SetIsWeb(bool newState)
