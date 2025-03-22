@@ -14,7 +14,12 @@ public class Trapdoor : MonoBehaviour
     [SerializeField] float _openingDuration;
     [SerializeField] float _closingDuration;
     [SerializeField] int rotateDirection;
-    
+    Collider _col;
+
+    private void Start()
+    {
+        _col = GetComponent<Collider>();
+    }
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && !_isOpening)
@@ -52,6 +57,7 @@ public class Trapdoor : MonoBehaviour
             transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
             yield return null; // Wait for next frame
         }
+        _col.enabled = false;
         transform.rotation = targetRotation; // Ensure we end exactly at target
 
         // Wait while open
@@ -77,6 +83,7 @@ public class Trapdoor : MonoBehaviour
             transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
             yield return null; // Wait for next frame
         }
+        _col.enabled = true;
         transform.rotation = targetRotation; // Ensure we end exactly at target
 
         _isOpening = false;
