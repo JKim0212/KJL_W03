@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class Rail : MonoBehaviour
 {
-    public bool prohibitJump;
+    [SerializeField] private float railSpeedRatePercent;
+    [SerializeField] private bool prohibitJump;
 
     private Vector3 thisRotation;
     private Vector3 enterVector;
     private float sinY, sinZ, cosY, cosZ, tanX, tanY;
+
+    public void Init(float railSpeedRatePercent, bool prohibitJump)
+    {
+        this.railSpeedRatePercent = railSpeedRatePercent;
+        this.prohibitJump = prohibitJump;
+    }
 
     private void Start()
     {
@@ -27,7 +34,7 @@ public class Rail : MonoBehaviour
             collider.transform.position = GetPosition(collider.transform.position + enterVector);
 
             collider.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
-            collider.transform.GetComponent<ControlPlayer>().MoveRail_();
+            collider.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
         }
     }
 
@@ -38,7 +45,7 @@ public class Rail : MonoBehaviour
             collision.transform.position = GetPosition(collision.transform.position);
             
             collision.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
-            collision.transform.GetComponent<ControlPlayer>().MoveRail_();
+            collision.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
         }
     }
 
@@ -54,6 +61,7 @@ public class Rail : MonoBehaviour
     {
         if (collider.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collider.gameObject.CompareTag("Character"))
         {
+            collider.transform.GetComponent<ControlPlayer>().MoveRailExit();
             StartCoroutine(collider.transform.GetComponent<ControlPlayer>().SetIsRail(false));
             collider.transform.GetComponent<ControlPlayer>().SetNowRail(null);
         }

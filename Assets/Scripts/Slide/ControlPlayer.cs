@@ -12,8 +12,7 @@ public class ControlPlayer : MonoBehaviour
 
     [SerializeField] private float moveSpeed;
     private float defaultMoveSpeed;
-    private float webMoveSpeed;
-    private float accelation = 0;
+    private float accelation = 0; // 가속 1단위 = 기본 속도 1%
     private bool isGround = false;
     private bool isRail = false;
 
@@ -41,7 +40,6 @@ public class ControlPlayer : MonoBehaviour
     {
         booster = MoveForwardBooster(0f, 0f);
         web = MoveForwardWeb(0f, 0f, true);
-        SetWebMoveSpeed(0.6f);
         defaultMoveSpeed = moveSpeed;
     }
 
@@ -56,22 +54,22 @@ public class ControlPlayer : MonoBehaviour
     {
         if (input.y > 0)
         {
-            accelation = accelation < 20 ? accelation + 1 : 20;
+            accelation = accelation < 40 ? accelation + 2 : 40;
         }
         else if (input.y < 0)
         {
-            accelation = accelation > -10 ? accelation - 2 : -10;
+            accelation = accelation > -20 ? accelation - 4 : -20;
         }
         else
         {
             //moveAccelation = moveAccelation > 10 ? moveAccelation - 1 : moveAccelation > 0 ? moveAccelation - 2 : 0;
-            if (accelation > 0) accelation = accelation > 0 ? accelation - 1 : 0;
-            else accelation = accelation < 0 ? accelation + 1 : 0;
+            if (accelation > 0) accelation = accelation > 0 ? accelation - 2 : 0;
+            else accelation = accelation < 0 ? accelation + 2 : 0;
         }
 
-        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * Time.deltaTime * moveSpeed);
+        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.01f) * Time.deltaTime * moveSpeed);
 
-        _mesh.Rotate((500f + 10f * accelation) * Time.deltaTime * Vector3.right); // 가속 1단위는 기본 속도의 2%
+        _mesh.Rotate((500f + 5f * accelation) * Time.deltaTime * Vector3.right);
 
         // 위는 전진, 아래는 좌우이동
 
@@ -90,15 +88,31 @@ public class ControlPlayer : MonoBehaviour
         else if (nowRotation.y > 180f && nowRotation.y < 315f) nowRotation.y = -45f;
         _rb.rotation = Quaternion.Euler(nowRotation);
     }
-    public void MoveRail_()
+    public void MoveRailEnter(float railSpeedRatePercent)
     {
         isRail = true;
 
         _rb.rotation = Quaternion.identity;
 
-        accelation = 10;
+        accelation = railSpeedRatePercent;
 
         _rb.linearVelocity = new(0, 0, _rb.linearVelocity.z);
+    }
+
+    public void MoveRailExit()
+    {
+        if (input.y > 0)
+        {
+            accelation = 40;
+        }
+        else if (input.y < 0)
+        {
+            accelation = -20;
+        }
+        else
+        {
+            accelation = 0;
+        }
     }
 
     private void MoveRail()
@@ -208,18 +222,13 @@ public class ControlPlayer : MonoBehaviour
         return isRail;
     }
 
-    public IEnumerator SetIsRail(bool newState)
+    public IEnumerator SetIsRail(bool state)
     {
         yield return new WaitForSeconds(0.1f);
 
-        isRail = newState;
+        isRail = state;
 
         yield break;
-    }
-
-    public void SetWebMoveSpeed(float rate)
-    {
-        webMoveSpeed = moveSpeed * rate;
     }
 
     public void SetNowRail(GameObject newRail)
@@ -234,6 +243,6 @@ public class ControlPlayer : MonoBehaviour
 
     public float GetVelocity()
     {
-        return _rb.linearVelocity.z + (1 + accelation * 0.02f) * moveSpeed;
+        return _rb.linearVelocity.z + (1 + accelation * 0.01f) * moveSpeed;
     }
 }
