@@ -126,6 +126,8 @@ public class ControlPlayer : MonoBehaviour
 
     public void MoveForwardBooster_(float boosterSpeed, float tick)
     {
+        _rb.linearVelocity = new(0, _rb.linearVelocity.y, boosterSpeed);
+
         StopCoroutine(booster);
         booster = MoveForwardBooster(boosterSpeed, boosterSpeed / tick);
         StartCoroutine(booster);
@@ -133,8 +135,6 @@ public class ControlPlayer : MonoBehaviour
 
     private IEnumerator MoveForwardBooster(float boosterSpeed, float rate)
     {
-        _rb.linearVelocity = new(0, _rb.linearVelocity.y, boosterSpeed);
-
         while (_rb.linearVelocity.z > 0f)
         {
             _rb.linearVelocity = new(0, _rb.linearVelocity.y, _rb.linearVelocity.z - rate);
