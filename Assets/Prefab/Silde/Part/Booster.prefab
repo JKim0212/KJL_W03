@@ -149,3 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ce690e92e72784c8d094c2cc46c662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boosterColor: {r: 1, g: 0, b: 0, a: 0}
+  boosterSpeed: 100
+  boosterTick: 100

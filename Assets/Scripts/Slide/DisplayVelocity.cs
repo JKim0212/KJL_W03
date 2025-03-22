@@ -37,8 +37,8 @@ public class DisplayVelocity : MonoBehaviour
 
         speed += shake;
 
-        // if (speed < 0f) speed = 0f;
-        if (speed < 100f) speed = speed / 100f * 135f;
+        if (speed < 0f) speed = 0f;
+        else if (speed < 100f) speed = speed / 100f * 135f;
         else if (speed < 200f) speed = 105f + speed * 0.3f; // 135f + (speed - 100f) / 100f * 30f
         else if (speed < 500f) speed = 155f + speed * 0.05f; // 165f + (speed - 200f) / 300f * 15f
         else speed = 180f;

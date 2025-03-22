@@ -1,6 +1,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 
 public class ControlPlayer : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class ControlPlayer : MonoBehaviour
     private GameObject nowRail = null;
     private IEnumerator booster;
     private IEnumerator web;
+    private IEnumerator pillar;
 
     public void OnMove(InputValue value)
     {
@@ -38,8 +40,9 @@ public class ControlPlayer : MonoBehaviour
 
     private void Start()
     {
-        booster = MoveForwardBooster(0f, 0f);
+        booster = MoveForwardBooster(0f);
         web = MoveForwardWeb(0f, 0f, true);
+        pillar = MoveForwardPillar(0f);
         defaultMoveSpeed = moveSpeed;
     }
 
@@ -62,7 +65,6 @@ public class ControlPlayer : MonoBehaviour
         }
         else
         {
-            //moveAccelation = moveAccelation > 10 ? moveAccelation - 1 : moveAccelation > 0 ? moveAccelation - 2 : 0;
             if (accelation > 0) accelation = accelation > 0 ? accelation - 2 : 0;
             else accelation = accelation < 0 ? accelation + 2 : 0;
         }
@@ -84,8 +86,9 @@ public class ControlPlayer : MonoBehaviour
 
         // 좌우 각도 보정
         Vector3 nowRotation = _rb.rotation.eulerAngles;
-        if (nowRotation.y < 180f && nowRotation.y > 50f) nowRotation.y = 50f;
-        else if (nowRotation.y > 180f && nowRotation.y < 310f) nowRotation.y = -50f;
+        if (nowRotation.y > 180f) nowRotation.y -= 360f;
+        if (nowRotation.y > 50f) nowRotation.y = 50f;
+        else if (nowRotation.y < -50f) nowRotation.y = -50f;
         _rb.rotation = Quaternion.Euler(nowRotation);
     }
     public void MoveRailEnter(float railSpeedRatePercent)
@@ -129,11 +132,12 @@ public class ControlPlayer : MonoBehaviour
         _rb.linearVelocity = new(0, _rb.linearVelocity.y, boosterSpeed);
 
         StopCoroutine(booster);
-        booster = MoveForwardBooster(boosterSpeed, boosterSpeed / tick);
+        StopCoroutine(pillar);
+        booster = MoveForwardBooster(boosterSpeed / tick);
         StartCoroutine(booster);
     }
 
-    private IEnumerator MoveForwardBooster(float boosterSpeed, float rate)
+    private IEnumerator MoveForwardBooster(float rate)
     {
         while (_rb.linearVelocity.z > 0f)
         {
@@ -156,10 +160,10 @@ public class ControlPlayer : MonoBehaviour
 
     private IEnumerator MoveForwardWeb(float webSpeedRate, float rate, bool enter)
     {
-        float finalWebSpeed = defaultMoveSpeed * webSpeedRate;
-
         if (enter)
         {
+            float finalWebSpeed = defaultMoveSpeed * webSpeedRate;
+
             while (moveSpeed > finalWebSpeed)
             {
                 moveSpeed -= rate;
@@ -178,6 +182,30 @@ public class ControlPlayer : MonoBehaviour
 
             moveSpeed = defaultMoveSpeed;
         }
+
+        yield break;
+    }
+
+    public void MoveForwardPillar_(float pillarMinusSpeed, float tick)
+    {
+        _rb.linearVelocity = new(0, _rb.linearVelocity.y, -pillarMinusSpeed);
+
+        StopCoroutine(pillar);
+        StopCoroutine(booster);
+        pillar = MoveForwardPillar(pillarMinusSpeed / tick);
+        StartCoroutine(pillar);
+    }
+
+    private IEnumerator MoveForwardPillar(float rate)
+    {
+        while (_rb.linearVelocity.z < 0f)
+        {
+            _rb.linearVelocity = new(0, _rb.linearVelocity.y, _rb.linearVelocity.z + rate);
+            _mesh.Rotate(10f * _rb.linearVelocity.z * Time.deltaTime * Vector3.left);
+            yield return new WaitForFixedUpdate();
+        }
+
+        _rb.linearVelocity = new(0, _rb.linearVelocity.y, 0f);
 
         yield break;
     }
@@ -245,4 +273,21 @@ public class ControlPlayer : MonoBehaviour
     {
         return _rb.linearVelocity.z + (1 + accelation * 0.01f) * moveSpeed;
     }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Booster"))
+        {
+            //collision.transform.position += new Vector3(0, 0, -1);
+            Vector3 v = Vector3.Reflect(tmp, collision.contacts[0].normal.normalized);
+            //v = new Vector3(v.x, transform.position.y, v.z);
+
+            transform.rotation = Quaternion.LookRotation(v);
+            //collision.transform.position += new Vector3(0, 0, -1);
+
+            _rb.linearVelocity = v;
+
+            Debug.Log(v);
+        }
+    }*/
 }
