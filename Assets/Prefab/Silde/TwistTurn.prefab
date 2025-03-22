@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7cb99d245eef7541a8f4cde086ad9c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rail: {fileID: 4422349754940838049, guid: 81ac77fa6454a424cb9c94deef946873, type: 3}
+  rail: {fileID: 4422349754940838049, guid: 81ac77fa6454a424cb9c94deef946873, type: 3}
+  material: {fileID: 2100000, guid: 985a428514bb4fe47b655ecba3691f93, type: 2}
+  railSpeedRatePercent: 0
   degree: 5
   length: 50
