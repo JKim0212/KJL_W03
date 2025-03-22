@@ -84,8 +84,8 @@ public class ControlPlayer : MonoBehaviour
 
         // 좌우 각도 보정
         Vector3 nowRotation = _rb.rotation.eulerAngles;
-        if (nowRotation.y < 180f && nowRotation.y > 45f) nowRotation.y = 45f;
-        else if (nowRotation.y > 180f && nowRotation.y < 315f) nowRotation.y = -45f;
+        if (nowRotation.y < 180f && nowRotation.y > 50f) nowRotation.y = 50f;
+        else if (nowRotation.y > 180f && nowRotation.y < 310f) nowRotation.y = -50f;
         _rb.rotation = Quaternion.Euler(nowRotation);
     }
     public void MoveRailEnter(float railSpeedRatePercent)
@@ -194,7 +194,7 @@ public class ControlPlayer : MonoBehaviour
         {
             isGround = false;
             isRail = false;
-            _rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * 12, ForceMode.Impulse);
         }
         else if (!isGround)
         {
