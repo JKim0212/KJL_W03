@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R)) RestartScene();
-        else if (Input.GetKeyDown(KeyCode.Escape)) QuitGame();
+        else if (Input.GetKeyDown(KeyCode.Escape)) GotoScene(0);
     }
 
     private void RestartScene()
@@ -34,7 +34,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void QuitGame()
+    public void GotoScene(int index)
+    {
+        SceneManager.LoadScene(index);
+    }
+
+    public void Quit()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
