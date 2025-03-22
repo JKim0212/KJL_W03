@@ -17,14 +17,31 @@ public class DisappearingFloor : MonoBehaviour
 
     IEnumerator Disappear()
     {
-        while (true)
-        {
-            _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, _rend.material.color.a-0.001f);
-            Debug.Log(_rend.material.color);
-            if (_rend.material.color.a < 0.1f) break;
 
-            yield return new WaitForSeconds(_timeUntilDisappear/900f);
+        //while (true)
+        //{
+
+        //    _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, _rend.material.color.a - (1 / 900f));
+        //    Debug.Log(_rend.material.color);
+
+        //    if (_rend.material.color.a < 0.1f) break;
+
+        //    yield return new WaitForSeconds(_timeUntilDisappear / 900f);
+        //}
+
+        float elapsedTime = 0f;
+        float startAlpha = _rend.material.color.a;
+
+        while (elapsedTime < _timeUntilDisappear)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, 0f, elapsedTime / _timeUntilDisappear);
+            _rend.material.color = new Color(_rend.material.color.r, _rend.material.color.g, _rend.material.color.b, newAlpha);
+            Debug.Log(_rend.material.color);
+            if (newAlpha < 0.1f) break;
+            yield return null; // Wait for next frame
         }
+
 
         _col.enabled = false;
         _rend.enabled = false;
