@@ -1,24 +1,25 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class ControlPlayer : MonoBehaviour
 {
     private Vector2 input;
     private bool jump;
 
-    private Rigidbody rb;
-    private Transform mesh;
-    public GameObject nowRail = null;
+    private Rigidbody _rb;
+    private Transform _mesh;
 
     [SerializeField] private float moveSpeed;
+    private float defaultMoveSpeed;
+    private float webMoveSpeed;
     private float accelation = 0;
     private bool isGround = false;
     private bool isRail = false;
-    private bool isWeb = false;
 
-    private IEnumerator Booster;
+    private GameObject nowRail = null;
+    private IEnumerator booster;
+    private IEnumerator web;
 
     public void OnMove(InputValue value)
     {
@@ -32,26 +33,28 @@ public class ControlPlayer : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        mesh = transform.GetChild(0).GetComponent<Transform>();
+        _rb = GetComponent<Rigidbody>();
+        _mesh = transform.GetChild(0).GetComponent<Transform>();
+    }
 
-        Booster = MoveForwardBooster();
+    private void Start()
+    {
+        booster = MoveForwardBooster(0f, 0f);
+        web = MoveForwardWeb(0f, 0f, true);
+        SetWebMoveSpeed(0.6f);
+        defaultMoveSpeed = moveSpeed;
     }
 
     private void FixedUpdate()
     {
         if (isRail) MoveRail();
         else Move();
-        if (nowRail == null || (nowRail != null && !nowRail.GetComponent<Rail>().getProhibitJump())) Jump();
+        if (nowRail == null || (nowRail != null && !nowRail.GetComponent<Rail>().GetProhibitJump())) Jump();
     }
 
     private void Move()
     {
-        if (isWeb)
-        {
-            accelation = -40;
-        }
-        else if (input.y > 0)
+        if (input.y > 0)
         {
             accelation = accelation < 20 ? accelation + 1 : 20;
         }
@@ -66,64 +69,101 @@ public class ControlPlayer : MonoBehaviour
             else accelation = accelation < 0 ? accelation + 1 : 0;
         }
 
-        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f * moveSpeed));
+        transform.Translate(new Vector3(0f, 0f, 1 + accelation * 0.02f) * Time.deltaTime * moveSpeed);
 
-        mesh.Rotate((500f + 10f * accelation) * Time.deltaTime * Vector3.right); // 가속 1단위는 기본 속도의 2%
+        _mesh.Rotate((500f + 10f * accelation) * Time.deltaTime * Vector3.right); // 가속 1단위는 기본 속도의 2%
 
         // 위는 전진, 아래는 좌우이동
 
         if (input.x != 0)
         {
-            rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f);
+            _rb.rotation = Quaternion.Lerp(_rb.rotation, Quaternion.Euler(Vector3.up * input.x * 60f), Time.deltaTime * 5f);
         }
         else
         {
-            rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
+            _rb.rotation = Quaternion.Lerp(_rb.rotation, Quaternion.identity, Time.deltaTime * 10f);
         }
 
         // 좌우 각도 보정
-        Vector3 nowRotation = rb.rotation.eulerAngles;
+        Vector3 nowRotation = _rb.rotation.eulerAngles;
         if (nowRotation.y < 180f && nowRotation.y > 45f) nowRotation.y = 45f;
         else if (nowRotation.y > 180f && nowRotation.y < 315f) nowRotation.y = -45f;
-        rb.rotation = Quaternion.Euler(nowRotation);
+        _rb.rotation = Quaternion.Euler(nowRotation);
     }
     public void MoveRail_()
     {
         isRail = true;
 
-        rb.rotation = Quaternion.identity;
+        _rb.rotation = Quaternion.identity;
 
-        rb.linearVelocity = new(0, 0, rb.linearVelocity.z);
+        accelation = 10;
+
+        _rb.linearVelocity = new(0, 0, _rb.linearVelocity.z);
     }
 
     private void MoveRail()
     {
-        transform.Translate(Vector3.forward * moveSpeed * 1.2f);
+        transform.Translate(new Vector3(0f, 0f, 1.2f) * Time.deltaTime * moveSpeed); // 1 + 0.02 * a(=10)
 
-        mesh.Rotate(600f * Time.deltaTime * Vector3.right); // 속도 1.2배니 회전도 1.2배
+        _mesh.Rotate(600f * Time.deltaTime * Vector3.right); // 속도 1.2배니 회전도 1.2배
 
         return;
     }
 
-    public void MoveForwardBooster_()
+    public void MoveForwardBooster_(float boosterSpeed, float tick)
     {
-        StopCoroutine(Booster);
-        Booster = MoveForwardBooster();
-        StartCoroutine(Booster);
+        StopCoroutine(booster);
+        booster = MoveForwardBooster(boosterSpeed, boosterSpeed / tick);
+        StartCoroutine(booster);
     }
 
-    private IEnumerator MoveForwardBooster()
+    private IEnumerator MoveForwardBooster(float boosterSpeed, float rate)
     {
-        rb.linearVelocity = new(0, rb.linearVelocity.y, 100f);
+        _rb.linearVelocity = new(0, _rb.linearVelocity.y, boosterSpeed);
 
-        while (rb.linearVelocity.z > 0f)
+        while (_rb.linearVelocity.z > 0f)
         {
-            rb.linearVelocity = new(0, rb.linearVelocity.y, rb.linearVelocity.z - 1f);
-            mesh.Rotate(20f*rb.linearVelocity.z * Time.deltaTime * Vector3.right);
+            _rb.linearVelocity = new(0, _rb.linearVelocity.y, _rb.linearVelocity.z - rate);
+            _mesh.Rotate(20f*_rb.linearVelocity.z * Time.deltaTime * Vector3.right);
             yield return new WaitForFixedUpdate();
         }
 
-        rb.linearVelocity = new(0, rb.linearVelocity.y, 0f);
+        _rb.linearVelocity = new(0, _rb.linearVelocity.y, 0f);
+
+        yield break;
+    }
+
+    public void MoveForwardWeb_(float webSpeedRate, float tick, bool enter)
+    {
+        StopCoroutine(web);
+        web = MoveForwardWeb(webSpeedRate, defaultMoveSpeed * (1f - webSpeedRate) / tick, enter);
+        StartCoroutine(web);
+    }
+
+    private IEnumerator MoveForwardWeb(float webSpeedRate, float rate, bool enter)
+    {
+        float finalWebSpeed = defaultMoveSpeed * webSpeedRate;
+
+        if (enter)
+        {
+            while (moveSpeed > finalWebSpeed)
+            {
+                moveSpeed -= rate;
+                yield return new WaitForFixedUpdate();
+            }
+
+            moveSpeed = finalWebSpeed;
+        }
+        else
+        {
+            while (moveSpeed < defaultMoveSpeed)
+            {
+                moveSpeed += rate;
+                yield return new WaitForFixedUpdate();
+            }
+
+            moveSpeed = defaultMoveSpeed;
+        }
 
         yield break;
     }
@@ -131,7 +171,7 @@ public class ControlPlayer : MonoBehaviour
     private void Jump()
     {
         // 점프 직후 지상판정이 나지 않도록 보정
-        if (rb.linearVelocity.y < 9f)
+        if (_rb.linearVelocity.y < 9f)
         {
             isGround = Physics.Raycast(transform.position, Vector3.down, 0.51f);
         }
@@ -140,25 +180,25 @@ public class ControlPlayer : MonoBehaviour
         {
             isGround = false;
             isRail = false;
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
         }
         else if (!isGround)
         {
-            Vector3 nowVelocity = rb.linearVelocity;
+            Vector3 nowVelocity = _rb.linearVelocity;
 
             if (nowVelocity.y < -40f)
             {
                 nowVelocity.y = -40f;
-                rb.linearVelocity = nowVelocity;
+                _rb.linearVelocity = nowVelocity;
             }
             else if (nowVelocity.y < 0f)
             {
-                rb.AddForce(Vector3.down * 2f, ForceMode.Impulse);
+                _rb.AddForce(Vector3.down * 2f, ForceMode.Impulse);
             }
             else if (nowVelocity.y < 7f)
             {
                 nowVelocity.y = -0.1f;
-                rb.linearVelocity = nowVelocity;
+                _rb.linearVelocity = nowVelocity;
             }
         }
     }
@@ -177,8 +217,23 @@ public class ControlPlayer : MonoBehaviour
         yield break;
     }
 
-    public void SetIsWeb(bool newState)
+    public void SetWebMoveSpeed(float rate)
     {
-        isWeb = newState;
+        webMoveSpeed = moveSpeed * rate;
+    }
+
+    public void SetNowRail(GameObject newRail)
+    {
+        nowRail = newRail;
+    }
+
+    public GameObject GetNowRail()
+    {
+        return nowRail;
+    }
+
+    public float GetVelocity()
+    {
+        return _rb.linearVelocity.z + (1 + accelation * 0.02f) * moveSpeed;
     }
 }

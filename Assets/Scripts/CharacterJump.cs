@@ -223,6 +223,8 @@ public class CharacterJump : MonoBehaviour
             if (isDoubleJump)
             {
                 jumpSpeed *= doubleJumpMultiplier;
+
+                ///////////////////////////////////
             }
 
             // 기존 속도를 무시하고 새로운 점프 스피드를 더하기

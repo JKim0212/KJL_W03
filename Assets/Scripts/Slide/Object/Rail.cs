@@ -6,12 +6,18 @@ public class Rail : MonoBehaviour
 
     private Vector3 thisRotation;
     private Vector3 enterVector;
-    private readonly float rad = Mathf.PI / 180f;
+    private float sinY, sinZ, cosY, cosZ, tanX, tanY;
 
     private void Start()
     {
         thisRotation = transform.rotation.eulerAngles;
-        enterVector = new Vector3(1.5f * Mathf.Cos(thisRotation.y * rad), 0, 1.5f * Mathf.Sin(thisRotation.y * rad));
+        sinY = Mathf.Sin(thisRotation.y * Constants.rad);
+        sinZ = Mathf.Sin(thisRotation.z * Constants.rad);
+        cosY = Mathf.Cos(thisRotation.y * Constants.rad);
+        cosZ = Mathf.Cos(thisRotation.z * Constants.rad);
+        tanX = Mathf.Tan(thisRotation.x * Constants.rad);
+        tanY = Mathf.Tan(thisRotation.y * Constants.rad);
+        enterVector = new Vector3(1.5f * cosY, 0, 1.5f * sinY);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -20,7 +26,7 @@ public class Rail : MonoBehaviour
         {
             collider.transform.position = GetPosition(collider.transform.position + enterVector);
 
-            collider.transform.GetComponent<ControlPlayer>().nowRail = gameObject;
+            collider.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
             collider.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
     }
@@ -31,14 +37,14 @@ public class Rail : MonoBehaviour
         {
             collision.transform.position = GetPosition(collision.transform.position);
             
-            collision.transform.GetComponent<ControlPlayer>().nowRail = gameObject;
+            collision.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
             collision.transform.GetComponent<ControlPlayer>().MoveRail_();
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
+        if (collision.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = GetPosition(collision.transform.position);
         }
@@ -46,10 +52,10 @@ public class Rail : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
-        if (collider.transform.GetComponent<ControlPlayer>().nowRail == gameObject && collider.gameObject.CompareTag("Character"))
+        if (collider.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collider.gameObject.CompareTag("Character"))
         {
             StartCoroutine(collider.transform.GetComponent<ControlPlayer>().SetIsRail(false));
-            collider.transform.GetComponent<ControlPlayer>().nowRail = null;
+            collider.transform.GetComponent<ControlPlayer>().SetNowRail(null);
         }
     }
 
@@ -57,14 +63,14 @@ public class Rail : MonoBehaviour
     {
         float dist = targetPosition.z - transform.position.z;
         Vector3 newPosition = transform.position;
-        newPosition.x += dist * Mathf.Tan(thisRotation.y * rad) - Mathf.Sin(thisRotation.z * rad);
-        newPosition.y += -dist / Mathf.Cos(thisRotation.y * rad) * Mathf.Tan(thisRotation.x * rad) + Mathf.Cos(thisRotation.z * rad);
+        newPosition.x += dist * tanY - sinZ;
+        newPosition.y += -dist / cosY * tanX + cosZ;
         newPosition.z = targetPosition.z;
 
         return newPosition;
     }
 
-    public bool getProhibitJump()
+    public bool GetProhibitJump()
     {
         return prohibitJump;
     }
