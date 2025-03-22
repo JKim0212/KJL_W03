@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public static class Constants
+{
+    public const float rad = Mathf.PI / 180f;
+}
+
 public class GameManager : MonoBehaviour
 {
     // Temporary Manager (not singleton)
@@ -9,7 +14,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown("r"))
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

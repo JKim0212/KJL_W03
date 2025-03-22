@@ -2031,6 +2031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestPlayer_03211622
       objectReference: {fileID: 0}
+    - target: {fileID: 5890679302015329245, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
