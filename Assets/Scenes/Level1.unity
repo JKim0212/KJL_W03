@@ -356,14 +356,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2801661219583483959, guid: 1a7cc05c3653aa04daa482b76036f3b4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3371786892935965818, guid: 1a7cc05c3653aa04daa482b76036f3b4, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2582,30 +2574,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1153689045740655019, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
-      propertyPath: m_Size.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1153689045740655019, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
-      propertyPath: m_Size.z
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1153689045740655019, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
-      propertyPath: m_Center.y
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1153689045740655019, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3009430485903299561, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
       propertyPath: m_Name
       value: TestPlayer_03211622
       objectReference: {fileID: 0}
-    - target: {fileID: 5989748492955840487, guid: 18fe9017326e9e94fb864fc8576f0e9f, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: 6be84d7277d027340b2b8217b80739b6, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3667,6 +3639,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3371786892935965818, guid: 1a7cc05c3653aa04daa482b76036f3b4, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4410998919751600364, guid: 1a7cc05c3653aa04daa482b76036f3b4, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
