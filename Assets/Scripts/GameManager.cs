@@ -1,3 +1,5 @@
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,9 +8,18 @@ public static class Constants
     public const float rad = Mathf.PI / 180f;
 }
 
+[System.Serializable]
+public class PlayerData
+{
+    // saveData
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; } // ╫л╠шео
+
+    private string filePath;
+    private PlayerData playerData;
 
     private void Awake()
     {
@@ -21,12 +32,48 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        //playerData = LoadData();
+        //playerData ??= new PlayerData();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R)) RestartScene();
         else if (Input.GetKeyDown(KeyCode.Escape)) GotoScene(0);
+    }
+
+    private void OnApplicationQuit()
+    {
+        //SaveData(playerData);
+    }
+
+    private void SaveData(PlayerData data)
+    {
+        filePath = Path.Combine(Application.persistentDataPath, "playerData.bin");
+
+        BinaryFormatter formatter = new();
+        using FileStream stream = new(filePath, FileMode.Create);
+        formatter.Serialize(stream, data);
+    }
+
+    private PlayerData LoadData()
+    {
+        filePath = Path.Combine(Application.persistentDataPath, "playerData.bin");
+
+        if (File.Exists(filePath))
+        {
+            BinaryFormatter formatter = new();
+            using FileStream stream = new(filePath, FileMode.Open);
+            return (PlayerData)formatter.Deserialize(stream);
+        }
+
+        return null;
+    }
+
+    public void ResetData()
+    {
+        playerData = new PlayerData();
     }
 
     private void RestartScene()
