@@ -23,7 +23,7 @@ public class CharacterGround : MonoBehaviour
 
         // 플레이어가 groundLayer에 위치하는가 확인
         // 기존코드는 2개 사용, 현재 코드는 4개 사용
-        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3(0f, -0.5f, 0f), new Vector3(0.95f/2, 0.4f, 0.95f/2), Quaternion.identity, groundLayer);
+        Collider[] cols = Physics.OverlapBox(transform.position + new Vector3(0f, -0.5f, 0f), new Vector3(0.8f/2, 0.4f/2, 0.8f/2), Quaternion.identity, groundLayer);
         // bool _rayHit = Physics.BoxCast(transform.position, new Vector3 (0.95f, 0.6f, 0.95f), Vector3.down, transform.rotation, groundLength, groundLayer);
         bool _rayHit1 = Physics.Raycast(transform.position + offset1, Vector3.down, groundLength, groundLayer);
         bool _rayHit2 = Physics.Raycast(transform.position + offset2, Vector3.down, groundLength, groundLayer);
@@ -52,7 +52,7 @@ public class CharacterGround : MonoBehaviour
         //Gizmos.DrawLine(transform.position + offset2, transform.position + offset2 + Vector3.down * groundLength);
         //Gizmos.DrawLine(transform.position + offset3, transform.position + offset3 + Vector3.down * groundLength);
         //Gizmos.DrawLine(transform.position + offset4, transform.position + offset4 + Vector3.down * groundLength);
-        Gizmos.DrawWireCube(transform.position, new Vector3(0.95f, 1.2f, 0.95f));
+        Gizmos.DrawWireCube(transform.position + new Vector3(0f, -0.5f, 0f), new Vector3(0.8f, 0.4f, 0.8f));
     }
 
     //Send ground detection to other scripts
