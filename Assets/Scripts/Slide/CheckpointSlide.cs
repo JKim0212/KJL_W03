@@ -19,18 +19,23 @@ public class CheckpointSlide : MonoBehaviour
 
     private IEnumerator DisplayAlarm()
     {
-        isSavedFirst = false;
+        isSavedFirst = true;
 
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 25; i++)
         {
-            saveAlarm.position += Vector3.down * 5f;
+            saveAlarm.position += Vector3.down * 8f;
 
             yield return new WaitForFixedUpdate();
         }
 
-        for (int i = 0; i < 40; i++)
+        for(int i = 0; i < 5; i++)
         {
-            saveAlarm.position += Vector3.up * 5f;
+            yield return new WaitForFixedUpdate();
+        }
+
+        for (int i = 0; i < 25; i++)
+        {
+            saveAlarm.position += Vector3.up * 8f;
 
             yield return new WaitForFixedUpdate();
         }
