@@ -64,4 +64,9 @@ public class GameManager : MonoBehaviour
     {
         _currentCheckpoint = checkpointNum;
     }
+
+    public void ToNextLevel(){
+        SceneManager.LoadScene("Level2");
+        _currentCheckpoint = 0;
+    }
 }
