@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ControlTower : MonoBehaviour
+public class ControlLobby : MonoBehaviour
 {
     public void GotoScene(int index)
     {
