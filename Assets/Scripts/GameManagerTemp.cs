@@ -22,7 +22,7 @@ public class GameManagerTemp : MonoBehaviour
     public void Respawn()
     {
         Rigidbody rb = player.GetComponent<Rigidbody>();
-        rb.position = _checkPoints[_currentCheckpoint].position;
+        rb.position = _checkPoints[_currentCheckpoint].position + Vector3.up * 3f;
     }
 
     public void ChangeCheckpoint(int checkpointNum)
