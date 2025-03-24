@@ -29,28 +29,28 @@ public class Rail : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (!collider.gameObject.CompareTag("Player")) return;
+        if (collider.gameObject.CompareTag("Character"))
+        {
+            collider.transform.position = GetPosition(collider.transform.position + enterVector);
 
-        collider.transform.position = GetPosition(collider.transform.position + enterVector);
-
-        collider.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
-        collider.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
+            collider.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
+            collider.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
-
-        collision.transform.position = GetPosition(collision.transform.position);
+        if (collision.gameObject.CompareTag("Character"))
+        {
+            collision.transform.position = GetPosition(collision.transform.position);
             
-        collision.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
-        collision.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
+            collision.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
+            collision.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
+        }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
-
         if (collision.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = GetPosition(collision.transform.position);
@@ -59,11 +59,10 @@ public class Rail : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
-        if (!collider.gameObject.CompareTag("Player")) return;
-
         if (collider.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collider.gameObject.CompareTag("Character"))
         {
             collider.transform.GetComponent<ControlPlayer>().MoveRailExit();
+            StartCoroutine(collider.transform.GetComponent<ControlPlayer>().SetIsRail(false));
             collider.transform.GetComponent<ControlPlayer>().SetNowRail(null);
         }
     }

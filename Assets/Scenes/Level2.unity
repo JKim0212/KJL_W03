@@ -34782,6 +34782,7 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 3813324587388750099, guid: 1183d7c0fbc6f764e89e49fa1848dcda, type: 3}
       propertyPath: m_Interpolate
       value: 0
@@ -34790,6 +34791,8 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 0
       objectReference: {fileID: 0}
+=======
+>>>>>>> parent of d77327b (게임매니저 일부 기능 분리)
     - target: {fileID: 3855162998497468076, guid: 1183d7c0fbc6f764e89e49fa1848dcda, type: 3}
       propertyPath: m_IsActive
       value: 0
