@@ -13,7 +13,6 @@ public class DisplayVelocity : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(Time.deltaTime);
         textMesh = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         niddle = transform.GetChild(1).GetComponent<RectTransform>();
     }

@@ -265,6 +265,11 @@ public class ControlPlayer : MonoBehaviour
         accelation = -100; // move 속도를 0으로 만들기
         isEnd = true;
 
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+
+        _mesh.rotation = Quaternion.Euler(180, 0, 0);
+
         float endVelocity = 30f;
 
         while (endVelocity > 0)
@@ -272,7 +277,6 @@ public class ControlPlayer : MonoBehaviour
             _rb.linearVelocity = Vector3.forward * endVelocity;
 
             _mesh.Rotate(10f * _rb.linearVelocity.z * Time.deltaTime * Vector3.right);
-            Debug.Log(_rb.linearVelocity);
 
             endVelocity -= 0.1f;
 
