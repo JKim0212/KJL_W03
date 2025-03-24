@@ -23,6 +23,7 @@ public class ControlPlayer : MonoBehaviour
     private IEnumerator web;
     private IEnumerator pillar;
 
+    [SerializeField] Ending _ending;
     public void OnMove(InputValue value)
     {
         input = value.Get<Vector2>();
@@ -286,7 +287,7 @@ public class ControlPlayer : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;
 
         //_mesh.Rotate(10f * _rb.linearVelocity.z * Time.deltaTime * Vector3.left);
-
+        _ending.StartTransition();
         yield break;
     }
 
