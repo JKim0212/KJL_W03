@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class Bottom : MonoBehaviour
+public class BottomSlide : MonoBehaviour
 {
-    [SerializeField] ControlGame controlGame;
+    [SerializeField] ControlGameSlide controlGameSlide;
 
     void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
-        controlGame.Respawn();
+        controlGameSlide.Respawn();
     }
 }

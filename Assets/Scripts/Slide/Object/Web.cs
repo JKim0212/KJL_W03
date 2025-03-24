@@ -13,17 +13,15 @@ public class Web : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
-        {
-            collider.transform.GetComponent<ControlPlayer>().MoveForwardWeb_(webSpeedRate, webTick, true);
-        }
+        if (!collider.gameObject.CompareTag("Player")) return;
+
+        collider.transform.GetComponent<ControlPlayer>().MoveForwardWeb_(webSpeedRate, webTick, true);
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
-        {
-            collider.transform.GetComponent<ControlPlayer>().MoveForwardWeb_(webSpeedRate, webTick, false);
-        }
+        if (!collider.gameObject.CompareTag("Player")) return;
+        
+        collider.transform.GetComponent<ControlPlayer>().MoveForwardWeb_(webSpeedRate, webTick, false);
     }
 }

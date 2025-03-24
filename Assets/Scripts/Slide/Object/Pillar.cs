@@ -10,32 +10,29 @@ public class Pillar : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
-        {
-            velocity = collider.attachedRigidbody.linearVelocity.z;
-            Debug.Log(velocity);
-        }
+        if (!collider.gameObject.CompareTag("Player")) return;
+
+        velocity = collider.attachedRigidbody.linearVelocity.z;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Character"))
-        {
-            Vector3 v = Vector3.Reflect(Vector3.forward, collision.contacts[0].normal);
-            v = new(v.x, 0, v.z);
+        if (!collision.gameObject.CompareTag("Player")) return;
 
-            collision.transform.rotation = Quaternion.LookRotation(v);
+        Vector3 v = Vector3.Reflect(Vector3.forward, collision.contacts[0].normal);
+        v = new(v.x, 0, v.z);
 
-            float reflect = collision.transform.rotation.eulerAngles.y;
+        collision.transform.rotation = Quaternion.LookRotation(v);
 
-            if (reflect > 180f) reflect = 360f - reflect; // 전진벡터와의 각도 절대값
-            if (reflect > 50f) reflect = 50f;
+        float reflect = collision.transform.rotation.eulerAngles.y;
 
-            reflect /= 50f;
+        if (reflect > 180f) reflect = 360f - reflect; // 전진벡터와의 각도 절대값
+        if (reflect > 50f) reflect = 50f;
 
-            float speed = velocity > 0 ? pillarMinusSpeed + velocity * bumperCofficient : pillarMinusSpeed;
+        reflect /= 50f;
 
-            collision.transform.GetComponent<ControlPlayer>().MoveForwardPillar_(speed * reflect, tick);
-        }
+        float speed = velocity > 0 ? pillarMinusSpeed + velocity * bumperCofficient : pillarMinusSpeed;
+
+        collision.transform.GetComponent<ControlPlayer>().MoveForwardPillar_(speed * reflect, tick);
     }
 }

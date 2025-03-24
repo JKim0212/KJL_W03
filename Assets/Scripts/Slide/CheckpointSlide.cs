@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class Checkpoint : MonoBehaviour
+public class CheckpointSlide : MonoBehaviour
 {
     [SerializeField] int _checkpointNum;
-    [SerializeField] ControlGame controlGame;
+    [SerializeField] ControlGameSlide controlGameSlide;
 
     void OnTriggerEnter(Collider collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        controlGame.ChangeCheckpoint(_checkpointNum);
+        controlGameSlide.ChangeCheckpoint(_checkpointNum);
     }
 }

@@ -13,9 +13,8 @@ public class Booster : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
-        {
-            collider.transform.GetComponent<ControlPlayer>().MoveForwardBooster_(boosterSpeed, boosterTick);
-        }
+        if (!collider.gameObject.CompareTag("Player")) return;
+
+        collider.transform.GetComponent<ControlPlayer>().MoveForwardBooster_(boosterSpeed, boosterTick);
     }
 }
