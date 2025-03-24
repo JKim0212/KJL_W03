@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _checkpointNum: 0
+  controlGame: {fileID: 0}
+  checkEffect: {fileID: 6970604456528747345, guid: 5389b238fd9502440846dce26c9a3c1f, type: 3}
 --- !u!65 &4410998919751600364
 BoxCollider:
   m_ObjectHideFlags: 0
