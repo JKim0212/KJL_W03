@@ -16,7 +16,6 @@ public class ControlGame : MonoBehaviour
 
     public void Respawn()
     {
-        Debug.Log("entered");
         //Rigidbody rb = player.GetComponent<Rigidbody>();
         player.transform.position = _checkPoints[_currentCheckpoint].position + Vector3.up * 3;
 
