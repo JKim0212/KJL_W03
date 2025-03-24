@@ -1,7 +1,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
+
 
 public class ControlPlayer : MonoBehaviour
 {
