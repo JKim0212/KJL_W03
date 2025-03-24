@@ -42,8 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R)) RestartScene();
-        else if (Input.GetKeyDown(KeyCode.Escape)) GotoScene(0);
+        if (Input.GetKeyDown(KeyCode.Escape)) GotoScene(0);
     }
 
     private void OnApplicationQuit()

@@ -14,8 +14,9 @@ public class ControlPlayer : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private float defaultMoveSpeed;
     private float accelation = 0; // 가속 1단위 = 기본 속도 1%
-    [SerializeField] private bool isGround = false;
-    [SerializeField] private bool isRail = false;
+    private bool isGround = false;
+    private bool isRail = false;
+    private bool isEnd = false;
 
     private GameObject nowRail = null;
     private IEnumerator booster;
@@ -48,6 +49,8 @@ public class ControlPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isEnd) return;
+
         if (isRail) MoveRail();
         else Move();
         if (nowRail == null || (nowRail != null && !nowRail.GetComponent<Rail>().GetProhibitJump())) Jump();
@@ -255,6 +258,32 @@ public class ControlPlayer : MonoBehaviour
     public bool GetIsRail()
     {
         return isRail;
+    }
+    
+    public IEnumerator SetIsEndTrue()
+    {
+        accelation = -100; // move 속도를 0으로 만들기
+        isEnd = true;
+
+        float endVelocity = 30f;
+
+        while (endVelocity > 0)
+        {
+            _rb.linearVelocity = Vector3.forward * endVelocity;
+
+            _mesh.Rotate(10f * _rb.linearVelocity.z * Time.deltaTime * Vector3.right);
+            Debug.Log(_rb.linearVelocity);
+
+            endVelocity -= 0.1f;
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        _rb.linearVelocity = Vector3.zero;
+
+        //_mesh.Rotate(10f * _rb.linearVelocity.z * Time.deltaTime * Vector3.left);
+
+        yield break;
     }
 
     public void SetNowRail(GameObject newRail)
