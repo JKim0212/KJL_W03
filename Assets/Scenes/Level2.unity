@@ -3521,6 +3521,7 @@ Mesh:
     size: 0
     path: 
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &221588427
 GameObject:
   m_ObjectHideFlags: 0
@@ -4158,6 +4159,8 @@ MonoBehaviour:
   m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 1
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!1001 &235793436
@@ -4992,6 +4995,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD
 --- !u!1 &297106193
 GameObject:
@@ -7822,6 +7826,8 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1887930141}
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!1001 &299459519
@@ -11716,6 +11722,7 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c79f3b2eae2c05e48b92fe48d94fa556, type: 3}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &548860253
 GameObject:
   m_ObjectHideFlags: 0
@@ -12336,6 +12343,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7836363822598171462, guid: cce47391b2889d14888445db56e95bfe, type: 3}
   m_PrefabInstance: {fileID: 1149294852}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!1 &555691799
@@ -13600,6 +13609,7 @@ MeshFilter:
   m_GameObject: {fileID: 711541189}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &716215730
 GameObject:
   m_ObjectHideFlags: 0
@@ -14393,6 +14403,8 @@ Mesh:
     path: 
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!1001 &720908214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14455,6 +14467,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8225169853202622302, guid: c79f3b2eae2c05e48b92fe48d94fa556, type: 3}
   m_PrefabInstance: {fileID: 720908214}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD
 --- !u!1 &721655641
 GameObject:
@@ -14957,6 +14970,8 @@ MonoBehaviour:
   m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 1
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!4 &724720180 stripped
@@ -23474,6 +23489,7 @@ Transform:
   m_PrefabInstance: {fileID: 1367538740}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_GameObject: {fileID: 1359262285}
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -24025,6 +24041,8 @@ MonoBehaviour:
   m_EditMode: 0
   m_FlipNormals: 0
   isOnGrid: 1
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 --- !u!1001 &1373300037
@@ -29457,6 +29475,7 @@ GameObject:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Name: (Clone)(Clone)(Clone)
   serializedVersion: 11
   m_SubMeshes:
@@ -29613,6 +29632,8 @@ GameObject:
   m_MeshOptimizationFlags: 1
   m_StreamData:
 =======
+=======
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1899938144}
@@ -29666,6 +29687,9 @@ BoxCollider:
   m_GameObject: {fileID: 1899938143}
   m_Material: {fileID: 0}
   m_IncludeLayers:
+<<<<<<< HEAD
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
+=======
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
     serializedVersion: 2
     m_Bits: 0
@@ -30378,6 +30402,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 101, y: 120, z: 763}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31046,6 +31071,9 @@ Mesh:
   m_IndexFormat: 0
   m_IndexBuffer: 0500040006000400030006000600030000000200010003000300010000000b000d000a000a000d000c000b000a00090009000a0008000900080007000e000f0010000f00110010001200130014001300150014001600170018001700190018001a001b001c001b001d001c001e001f0020001f0021002000220023002400230025002400260027002800270029002800
   m_VertexData:
+=======
+  m_Modification:
+>>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
 =======
   m_Modification:
 >>>>>>> parent of 2c55f79 (Merge branch 'Make_Level' into main_merge_carrot)
