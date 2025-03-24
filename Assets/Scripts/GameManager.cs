@@ -16,7 +16,7 @@ public class PlayerData
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } // ╫л╠шео
+    public static GameManager Instance { get; private set; } // singleton
 
     private string filePath;
     public PlayerData playerData;
@@ -33,9 +33,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        ///////////////////////////playerData = LoadData();
-
-        ///////////////////////////playerData ??= new PlayerData();
+        //playerData = LoadData();
+        //playerData ??= new PlayerData();
     }
 
     private void Update()
@@ -44,12 +43,12 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape)) GotoScene(0);
     }
 
-    public void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
-        ///////////////////////////SaveData(playerData);
+        //SaveData(playerData);
     }
 
-    public void SaveData(PlayerData data)
+    private void SaveData(PlayerData data)
     {
         filePath = Path.Combine(Application.persistentDataPath, "playerData.bin");
 
