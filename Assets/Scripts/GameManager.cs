@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform[] _checkPoints;
     
     int _currentCheckpoint = 0;
-    public static GameManager Instance { get; private set; } // ╫л╠шео
+    public static GameManager Instance { get; private set; } // б╫ц▄б╠ц⌡ц┘ц▐
 
     private void Awake()
     {

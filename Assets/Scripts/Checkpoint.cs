@@ -7,7 +7,7 @@ public class Checkpoint : MonoBehaviour
     void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.CompareTag("Player")){
-            GameManagerTemp.instance.ChangeCheckpoint(_checkpointNum);
+            GameManager.Instance.ChangeCheckpoint(_checkpointNum);
         }
     }
 }
