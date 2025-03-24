@@ -14,8 +14,8 @@ public class ControlPlayer : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private float defaultMoveSpeed;
     private float accelation = 0; // 가속 1단위 = 기본 속도 1%
-    [SerializeField] private bool isGround = false;
-    [SerializeField] private bool isRail = false;
+    private bool isGround = false;
+    private bool isRail = false;
 
     private GameObject nowRail = null;
     private IEnumerator booster;
@@ -215,14 +215,7 @@ public class ControlPlayer : MonoBehaviour
         // 점프 직후 지상판정이 나지 않도록 보정
         if (_rb.linearVelocity.y < 9f)
         {
-            if(Physics.Raycast(transform.position, Vector3.down, 0.51f)){
-                isGround = true;
-            }
-            else
-            {
-                isGround = false;
-                isRail = false;
-            }
+            isGround = Physics.Raycast(transform.position, Vector3.down, 0.51f);
         }
 
         if (jump && isGround)
@@ -257,6 +250,15 @@ public class ControlPlayer : MonoBehaviour
         return isRail;
     }
 
+    public IEnumerator SetIsRail(bool state)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        isRail = state;
+
+        yield break;
+    }
+
     public void SetNowRail(GameObject newRail)
     {
         nowRail = newRail;
@@ -271,4 +273,21 @@ public class ControlPlayer : MonoBehaviour
     {
         return _rb.linearVelocity.z + (1 + accelation * 0.01f) * moveSpeed;
     }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Booster"))
+        {
+            //collision.transform.position += new Vector3(0, 0, -1);
+            Vector3 v = Vector3.Reflect(tmp, collision.contacts[0].normal.normalized);
+            //v = new Vector3(v.x, transform.position.y, v.z);
+
+            transform.rotation = Quaternion.LookRotation(v);
+            //collision.transform.position += new Vector3(0, 0, -1);
+
+            _rb.linearVelocity = v;
+
+            Debug.Log(v);
+        }
+    }*/
 }
