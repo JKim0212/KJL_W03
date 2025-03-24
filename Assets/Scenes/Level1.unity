@@ -20250,6 +20250,7 @@ GameObject:
   - component: {fileID: 1008398592}
   - component: {fileID: 1008398591}
   - component: {fileID: 1008398590}
+  - component: {fileID: 1008398593}
   m_Layer: 3
   m_Name: Trapdoor (1)
   m_TagString: Untagged
@@ -20317,6 +20318,27 @@ Transform:
   - {fileID: 815092001}
   m_Father: {fileID: 534743898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1008398593
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008398589}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 50, y: 1, z: 10}
+  m_Center: {x: 0, y: -0.6, z: -5}
 --- !u!1 &1018171216
 GameObject:
   m_ObjectHideFlags: 0
@@ -23623,7 +23645,7 @@ Transform:
   m_GameObject: {fileID: 1217314121}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17576662, y: 5.071429, z: -3.3538263}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23641,18 +23663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db33f063dbb02e04da12d8e9073af73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 7605208771007190108}
-  _checkPoints:
-  - {fileID: 1171565374}
-  - {fileID: 803390311}
-  - {fileID: 757841530}
-  - {fileID: 1945926970}
-  - {fileID: 1280287896}
-  - {fileID: 1135429530}
-  - {fileID: 2047695238}
-  - {fileID: 696698677}
-  - {fileID: 308463219}
-  - {fileID: 844177375}
   playerData:
     stage: 0000000000000000000000
 --- !u!1 &1218008646
@@ -30634,8 +30644,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476321103}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17327392, y: 0.025780799, z: -0.0045373524, w: 0.98452574}
-  m_LocalPosition: {x: -0.15786771, y: 102.395706, z: -3.012295}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 101.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33177,7 +33187,7 @@ GameObject:
   - component: {fileID: 1644540973}
   - component: {fileID: 1644540972}
   m_Layer: 0
-  m_Name: GameControl
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33202,11 +33212,11 @@ MonoBehaviour:
   - {fileID: 757841530}
   - {fileID: 1945926970}
   - {fileID: 1280287896}
-  - {fileID: 1280287896}
   - {fileID: 1135429530}
   - {fileID: 2047695238}
   - {fileID: 696698677}
   - {fileID: 308463219}
+  - {fileID: 844177375}
 --- !u!4 &1644540973
 Transform:
   m_ObjectHideFlags: 0
@@ -43969,6 +43979,10 @@ PrefabInstance:
     - target: {fileID: 8699560787789425109, guid: a3fec65d8f6d13e49a78c8d29567c9ae, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130610601206600946, guid: a3fec65d8f6d13e49a78c8d29567c9ae, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4491280163980331275, guid: a3fec65d8f6d13e49a78c8d29567c9ae, type: 3}

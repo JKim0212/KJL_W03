@@ -8846,11 +8846,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db33f063dbb02e04da12d8e9073af73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 539355782}
-  _checkPoints:
-  - {fileID: 1572560636}
-  - {fileID: 745971493}
-  - {fileID: 1166331978}
   playerData:
     stage: 0000000000000000000000
 --- !u!4 &632468966
@@ -21778,7 +21773,7 @@ GameObject:
   - component: {fileID: 1695603073}
   - component: {fileID: 1695603072}
   m_Layer: 0
-  m_Name: GameControl
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

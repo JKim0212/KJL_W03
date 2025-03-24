@@ -20,9 +20,11 @@ public class Trapdoor : MonoBehaviour
     {
         _col = GetComponent<Collider>();
     }
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && !_isOpening)
+        if (!collision.gameObject.CompareTag("Player")) return;
+
+        if (!_isOpening)
         {
             StartCoroutine(Open());
         }
