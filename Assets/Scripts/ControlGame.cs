@@ -6,7 +6,7 @@ public class ControlGame : MonoBehaviour
     [SerializeField] Transform[] _checkPoints;
 
     private int _currentCheckpoint = 0;
-
+    public int CurrentCheckpoint => _currentCheckpoint;
     public void Respawn()
     {
         Debug.Log("entered");
