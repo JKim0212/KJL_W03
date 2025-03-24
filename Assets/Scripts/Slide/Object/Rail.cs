@@ -32,6 +32,7 @@ public class Rail : MonoBehaviour
         if (!collider.gameObject.CompareTag("Player")) return;
 
         collider.transform.position = GetPosition(collider.transform.position + enterVector);
+        collider.transform.rotation = transform.rotation;
 
         collider.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
         collider.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
@@ -42,7 +43,8 @@ public class Rail : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player")) return;
 
         collision.transform.position = GetPosition(collision.transform.position);
-            
+        collision.transform.rotation = transform.rotation;
+
         collision.transform.GetComponent<ControlPlayer>().SetNowRail(gameObject);
         collision.transform.GetComponent<ControlPlayer>().MoveRailEnter(railSpeedRatePercent);
     }
@@ -54,6 +56,7 @@ public class Rail : MonoBehaviour
         if (collision.transform.GetComponent<ControlPlayer>().GetNowRail() == gameObject && collision.transform.GetComponent<ControlPlayer>().GetIsRail())
         {
             collision.transform.position = GetPosition(collision.transform.position);
+            collision.transform.rotation = transform.rotation;
         }
     }
 
