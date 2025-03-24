@@ -8,7 +8,7 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        if (!collision.gameObject.CompareTag("Player") || controlGame.CurrentCheckpoint == _checkpointNum) return;
+        if (!collision.gameObject.CompareTag("Player") || controlGame.currentCheckpoint == _checkpointNum) return;
 
         Instantiate(checkEffect, transform.position, Quaternion.Euler(-90f, 0,0));
         controlGame.ChangeCheckpoint(_checkpointNum);

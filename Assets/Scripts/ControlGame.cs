@@ -6,7 +6,14 @@ public class ControlGame : MonoBehaviour
     [SerializeField] Transform[] _checkPoints;
 
     private int _currentCheckpoint = 0;
-    public int CurrentCheckpoint => _currentCheckpoint;
+    public int currentCheckpoint => _currentCheckpoint;
+
+    private void Awake()
+    {
+        _currentCheckpoint = GameManager.Instance.playerData.nowStage;
+        Respawn();
+    }
+
     public void Respawn()
     {
         Debug.Log("entered");
@@ -18,5 +25,6 @@ public class ControlGame : MonoBehaviour
     public void ChangeCheckpoint(int checkpointNum)
     {
         _currentCheckpoint = checkpointNum;
+        GameManager.Instance.playerData.nowStage = checkpointNum;
     }
 }

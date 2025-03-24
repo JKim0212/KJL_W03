@@ -12,6 +12,8 @@ public static class Constants
 public class PlayerData
 {
     public bool[] stage = new bool[11];
+    public int nowStage = 0; // 1스테이지 현재 저장 스테이지
+    public bool isOneCleared; // 1스테이지 클리어 여부 (2스테이지 진입 가능 여부)
 }
 
 public class GameManager : MonoBehaviour
@@ -34,8 +36,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //playerData = LoadData();
-        //playerData ??= new PlayerData();
+        playerData = LoadData();
+        playerData ??= new PlayerData();
     }
 
     private void Update()
@@ -46,7 +48,7 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        //SaveData(playerData);
+        SaveData(playerData);
     }
 
     private void SaveData(PlayerData data)
